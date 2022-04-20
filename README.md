@@ -1,3 +1,3 @@
 # BeerGeek
 
-Deadline : 31mai
+Deadline : 31 mai
