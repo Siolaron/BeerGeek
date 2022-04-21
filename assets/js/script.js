@@ -1,9 +1,12 @@
-import {amountSugarProduct, calculDensity, clickOnTab} from './helpers.js';
+import { amountSugarProduct, calculDensity, clickOnTab } from './helpers.js';
 
 /* --------------------------------------------------------------------------------------------
                                       CREATE RECEIPT
 -------------------------------------------------------------------------------------------- */
 
+/**
+ * Check the create receipt form
+ */
 function checkCreateReceipt(e) {
     e.preventDefault()
     let form_createreceipt = e.target
@@ -31,7 +34,6 @@ function checkCreateReceipt(e) {
     }
 
     // Check boiling
-
     if (receipt_boiling.value == '' || receipt_boiling.value == null || receipt_boiling.value == 'undefined') {
         setErrorCreateReceipt(receipt_boiling, 'Ce champ est incorrect')
         validate_boiling = false
@@ -52,6 +54,9 @@ function checkCreateReceipt(e) {
 
 }
 
+/**
+ * Create error message
+ */
 function setErrorCreateReceipt(input, message) {
     // Disabled add ingredient button
     document.getElementById('add_ingredient').classList.add('disabled')
@@ -68,33 +73,51 @@ function setErrorCreateReceipt(input, message) {
 
     // Focus listener to remove error
     input.addEventListener('focus', function () {
+        // Remove class
         input.classList.remove('error')
+        // Remove message
         errorMessage.remove()
     })
 }
 
+/**
+ * Called to unable add ingredient button
+ */
 function validateCreateReceipt() {
     // Enable add ingredient button
     document.getElementById('add_ingredient').classList.remove('disabled')
+    // Add event listener
+    let btn_add_ingredient = document.getElementById('add_ingredient')
+    btn_add_ingredient.addEventListener('click', openModalToAddIngredient)
 }
 
-window.addEventListener("load", function() {
+/**
+ * Open modal to add an ingredient
+ */
+function openModalToAddIngredient() {
+    let modal = document.getElementById('modal-ingredients')
+    modal.style.display = 'flex'
+}
+
+window.addEventListener("load", function () {
 
     /* TABS */
-	// Retrieve the tabs that correspond to the different types of ingredients
-	let tabs = document.querySelectorAll(".tabs-ingredients__list > li");
+    // Retrieve the tabs that correspond to the different types of ingredients
+    let tabs = document.querySelectorAll(".tabs-ingredients__list > li");
 
     //For each tab, add a listener to the click
-	for (let i = 0; i < tabs.length; i++) {
-		tabs[i].addEventListener( "click", clickOnTab);
-	}
-  
-  /* CREATE RECEIPT */
-  document.getElementById('form__createreceipt').addEventListener('submit', checkCreateReceipt)
-    
+    for (let i = 0; i < tabs.length; i++) {
+        tabs[i].addEventListener("click", clickOnTab);
+    }
+
+    /* CREATE RECEIPT */
+    let form_createreceipt = document.getElementById('form__createreceipt')
+    if (form_createreceipt != null)
+        form_createreceipt.addEventListener('submit', checkCreateReceipt)
+
 });
 
-/* EXEMPLE calculDensity */ 
+/* EXEMPLE calculDensity */
 
 /*
 let listGrain = {

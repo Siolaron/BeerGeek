@@ -2,7 +2,7 @@
 
 <main>
     <h1>Créer une recette</h1>
-    <form action="post" class="createreceipt" id="form__createreceipt">
+    <form method="post" class="createreceipt" id="form__createreceipt">
         <div class="createreceipt__group">
             <label for="receipt_name" class="createreceipt__label">Nom</label>
             <input type="text" name="receipt_name" id="receipt_name" class="createreceipt__input" value="Test">
@@ -61,6 +61,47 @@
             </div>
         </li> -->
     </ul>
+
+    <div class="modal-ingredients" id="modal-ingredients">
+        <div class="modal-ingredients__leftcontent">
+            <h2>Ajouter un ingrédient</h2>
+            <div class="tabs-ingredients">
+                <ul class="tabs-ingredients__list">
+                    <li class="tabs-ingredients__item active" data-ingredient="malts">Tab 1</li>
+                    <li class="tabs-ingredients__item" data-ingredient="houblons">Tab 2</li>
+                    <li class="tabs-ingredients__item" data-ingredient="levures">Tab 3</li>
+                </ul>
+                <div class="tabs-ingredients__content">
+                    <div id="malts" class="tab-ingredients__pane active">
+                        <h3>Ingredient 1</h3>
+                    </div>
+                    <div id="houblons" class="tab-ingredients__pane">
+                        <h3>Ingredient 2</h3>
+                    </div>
+                    <div id="levures" class="tab-ingredients__pane">
+                        <h3>Ingredient 3</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-ingredients__rightcontent">
+            <form action="" method="post" id="form__add-ingredient" class="form__add-ingredient">
+                <div class="form__add-ingredient__group">
+                    <label for=""></label>
+                    <input type="text">
+                </div>
+                <div class="form__add-ingredient__group">
+                    <label for=""></label>
+                    <input type="text">
+                </div>
+                <div class="form__add-ingredient__group">
+                    <label for=""></label>
+                    <input type="text">
+                </div>
+            </form>
+        </div>
+
+    </div>
 </main>
 
 <?php require_once('./inc/footer.php') ?>
