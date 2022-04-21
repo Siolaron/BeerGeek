@@ -66,7 +66,7 @@
         <div class="modal-ingredients__leftcontent">
             <h2>Ajouter un ingrédient</h2>
             <div class="tabs-ingredients">
-                <ul class="tabs-ingredients__list">
+                <ul class="tabs-ingredients__list modal-tabs">
                     <li class="tabs-ingredients__item active" data-ingredient="malts">Malt</li>
                     <li class="tabs-ingredients__item" data-ingredient="houblons">Houblon</li>
                     <li class="tabs-ingredients__item" data-ingredient="levures">Levure</li>
@@ -117,27 +117,25 @@
                 </div>
             </div>
         </div>
-        <div class="modal-ingredients__rightcontent">
-            <form action="" method="post" id="form__add-ingredient" class="form__add-ingredient">
-                <div class="form__add-ingredient__group">
-                    <label for="add_quantity">Quantité</label>
-                    <input type="number" name="add_quantity" id="add_quantity" min="1">
-                </div>
-                <div class="form__add-ingredient__group">
-                    <label for="add_step">Etape d'ajout</label>
-                    <select name="add_step" id="add_step">
-                        <option value="empatage">Empatage</option>
-                        <option value="ebulition">Ebulition</option>
-                        <option value="fermentation">Fermentation</option>
-                    </select>
-                </div>
-                <div class="form__add-ingredient__group">
-                    <label for="add_time">Temps</label>
-                    <input type="text" name="add_time" id="add_time">
-                </div>
-            </form>
-        </div>
-
+        <form action="" method="post" id="form__add-ingredient" class="form__add-ingredient">
+            <div class="form__add-ingredient__group">
+                <label for="add_quantity" class="form__add-ingredient__label">Quantité</label>
+                <input type="number" name="add_quantity" id="add_quantity" min="1" class="form__add-ingredient__input">
+            </div>
+            <div class="form__add-ingredient__group">
+                <label for="add_step" class="form__add-ingredient__label">Etape d'ajout</label>
+                <select name="add_step" id="add_step" class="form__add-ingredient__input">
+                    <option value="empatage">Empatage</option>
+                    <option value="ebulition">Ebulition</option>
+                    <option value="fermentation">Fermentation</option>
+                </select>
+            </div>
+            <div class="form__add-ingredient__group">
+                <label for="add_time" class="form__add-ingredient__label">Temps</label>
+                <input type="text" name="add_time" id="add_time" class="form__add-ingredient__input">
+            </div>
+            <input type="submit" value="Ajouter" class="cta disable">
+        </form>
     </div>
 </main>
 
