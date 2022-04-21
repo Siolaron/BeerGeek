@@ -6,6 +6,7 @@
     /* Colors */
     --c-secondary: #FD8008;
     --c-primary: #0F80FF;
+    --c-error: #ea1c1c;
     --c-grey: #d0d0d0;
     --c-black: #000000;
     --c-white: #FFFFFF;
@@ -149,18 +150,56 @@ main {
 }
 
 .createreceipt__group {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: repeat(2, auto);
     column-gap: .5rem;
+    grid-template-areas:
+        'label input suffix'
+        '. error .';
+    position: relative;
 }
 
 .createreceipt__label {
+    grid-area: label;
     font-weight: var(--fw-semi_bold);
 }
 
 .createreceipt__input {
     padding-inline: .25rem;
+    grid-area: input;
+}
+
+.createreceipt__input.error {
+    border-color: var(--c-error);
+}
+
+.createreceipt__suffix {
+    grid-area: suffix;
+}
+
+.createreceipt__error {
+    grid-area: error;
 }
 
 /* --------------------------------------------------------------------------------------------
                                         UTILITIE
 -------------------------------------------------------------------------------------------- */
+
+/* ------------------------
+          CTA
+------------------------ */
+
+.cta {
+    padding: .5rem 1rem;
+    border: solid 2px var(--c-primary);
+    background-color: transparent;
+    color: var(--c-primary);
+    cursor: pointer;
+    transition: all .15s ease-in;
+}
+
+.cta:hover {
+    background-color: var(--c-primary);
+    color: var(--c-white);
+}
