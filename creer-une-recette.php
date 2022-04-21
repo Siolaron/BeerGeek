@@ -23,6 +23,7 @@
             <p class="createreceipt__suffix">%</p>
         </div>
     </form>
+    <button class="cta" id="add_ingredient">Ajouter un ingrédient</button>
     <ul class="tabreceipt">
         <li class="tabreceipt__line main">
             <div class="tabreceipt__item">
