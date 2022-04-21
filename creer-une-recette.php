@@ -2,7 +2,7 @@
 
 <main>
     <h1>Créer une recette</h1>
-    <form action="" class="createreceipt">
+    <form class="createreceipt" id="form__createreceipt">
         <div class="createreceipt__group">
             <label for="receipt_name" class="createreceipt__label">Nom</label>
             <input type="text" name="receipt_name" id="receipt_name" class="createreceipt__input">
@@ -18,10 +18,11 @@
             <p class="createreceipt__suffix">minutes</p>
         </div>
         <div class="createreceipt__group">
-            <label for="receipt_estimated-efficiency" class="createreceipt__label">Efficacité estimée</label>
-            <input type="number" name="receipt_estimated-efficiency" id="receipt_estimated-efficiency" min="1" max="100" class="createreceipt__input">
+            <label for="receipt_estimated_efficiency" class="createreceipt__label">Efficacité estimée</label>
+            <input type="number" name="receipt_estimated_efficiency" id="receipt_estimated_efficiency" min="1" max="100" class="createreceipt__input">
             <p class="createreceipt__suffix">%</p>
         </div>
+        <input type="submit" value="Créer ma recette" class="cta">
     </form>
     <button class="cta" id="add_ingredient">Ajouter un ingrédient</button>
     <ul class="tabreceipt">
