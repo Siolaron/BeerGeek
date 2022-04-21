@@ -2,7 +2,7 @@
 
 <main>
     <h1>Créer une recette</h1>
-    <form class="createreceipt" id="form__createreceipt">
+    <form action="post" class="createreceipt" id="form__createreceipt">
         <div class="createreceipt__group">
             <label for="receipt_name" class="createreceipt__label">Nom</label>
             <input type="text" name="receipt_name" id="receipt_name" class="createreceipt__input">
@@ -24,7 +24,7 @@
         </div>
         <input type="submit" value="Créer ma recette" class="cta">
     </form>
-    <button class="cta" id="add_ingredient">Ajouter un ingrédient</button>
+    <button class="cta disabled" id="add_ingredient">Ajouter un ingrédient</button>
     <ul class="tabreceipt">
         <li class="tabreceipt__line main">
             <div class="tabreceipt__item">

@@ -180,6 +180,7 @@ main {
 
 .createreceipt__error {
     grid-area: error;
+    font-size: var(--fs-s);
 }
 
 /* --------------------------------------------------------------------------------------------
@@ -202,4 +203,11 @@ main {
 .cta:hover {
     background-color: var(--c-primary);
     color: var(--c-white);
+}
+
+.cta.disabled {
+    border-color: var(--c-grey);
+    background-color: transparent;
+    color: var(--c-grey);
+    cursor: not-allowed;
 }
