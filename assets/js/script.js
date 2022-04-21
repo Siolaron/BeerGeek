@@ -1,20 +1,4 @@
-// import calculDensity from './helpers.js'
-
-/*
-let listGrain = {
-    acidMalt : {
-        "mass" : 12,
-        "potential" : 58.7
-    },
-    amberMalt : {
-        "mass" : 2,
-        "potential" : 75
-    },
-}
-
-let test = calculDensity(listGrain,200,80)
-
-console.log(test)*/
+import {amountSugarProduct, calculDensity, clickOnTab} from './helpers.js';
 
 /* --------------------------------------------------------------------------------------------
                                       CREATE RECEIPT
@@ -94,4 +78,36 @@ function validateCreateReceipt() {
     document.getElementById('add_ingredient').classList.remove('disabled')
 }
 
-document.getElementById('form__createreceipt').addEventListener('submit', checkCreateReceipt)
+window.addEventListener("load", function() {
+
+    /* TABS */
+	// Retrieve the tabs that correspond to the different types of ingredients
+	let tabs = document.querySelectorAll(".tabs-ingredients__list > li");
+
+    //For each tab, add a listener to the click
+	for (let i = 0; i < tabs.length; i++) {
+		tabs[i].addEventListener( "click", clickOnTab);
+	}
+  
+  /* CREATE RECEIPT */
+  document.getElementById('form__createreceipt').addEventListener('submit', checkCreateReceipt)
+    
+});
+
+/* EXEMPLE calculDensity */ 
+
+/*
+let listGrain = {
+    acidMalt : {
+        "mass" : 12,
+        "potential" : 58.7
+    },
+    amberMalt : {
+        "mass" : 2,
+        "potential" : 75
+    },
+}
+
+let test = calculDensity(listGrain,200,80)
+
+console.log(test)*/
