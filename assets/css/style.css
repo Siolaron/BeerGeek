@@ -6,7 +6,8 @@
     /* Colors */
     --c-secondary: #FD8008;
     --c-primary: #0F80FF;
-    --c-grey: #707070;
+    --c-error: #ea1c1c;
+    --c-grey: #d0d0d0;
     --c-black: #000000;
     --c-white: #FFFFFF;
 
@@ -15,7 +16,7 @@
 
     /* Font size */
     --fs-ratio: 1.2;
-    --fs-sm: calc(var(--fs-m) / var(--fs-ratio));
+    --fs-s: calc(var(--fs-m) / var(--fs-ratio));
     --fs-m: 1em;
     --fs-l: calc(var(--fs-m)* var(--fs-ratio));
     --fs-xl: calc(var(--fs-l)* var(--fs-ratio));
@@ -60,6 +61,22 @@ h1, h2, h3, h4, h5, h6, p, blockquote {
     max-width: 80ch;
 }
 
+h1 {
+    font-size: var(--fs-xl);
+}
+
+h2 {
+    font-size: var(--fs-l);
+}
+
+h3 {
+    font-size: var(--fs-m);
+}
+
+h4 {
+    font-size: var(--fs-s);
+}
+
 /* --------------------------------------------------------------------------------------------
                                         LAYOUT
 -------------------------------------------------------------------------------------------- */
@@ -86,14 +103,104 @@ main {
     grid-area: content;
 }
 
+/* ------------------------
+      CREATE RECEIPT
+------------------------ */
+
+.createreceipt {
+    display: flex;
+    column-gap: 3rem;
+}
+
+
+
 /* --------------------------------------------------------------------------------------------
                                       COMPONENT
 -------------------------------------------------------------------------------------------- */
 
 /* ------------------------
-           NAME
+       TAB RECEIPT
 ------------------------ */
+
+.tabreceipt {
+    display: flex;
+    flex-direction: column;
+}
+
+.tabreceipt__line {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas: 'name type quantity step time';
+}
+
+.tabreceipt__line.main {
+    background-color: var(--c-grey);
+}
+
+.tabreceipt__item {
+    padding: .5rem;
+    border: solid 1px var(--c-black);
+}
+
+/* ------------------------
+    CREATE RECEIPT
+------------------------ */
+
+.createreceipt {
+    margin: 1rem 0;
+}
+
+.createreceipt__group {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: repeat(2, auto);
+    column-gap: .5rem;
+    grid-template-areas:
+        'label input suffix'
+        '. error .';
+    position: relative;
+}
+
+.createreceipt__label {
+    grid-area: label;
+    font-weight: var(--fw-semi_bold);
+}
+
+.createreceipt__input {
+    padding-inline: .25rem;
+    grid-area: input;
+}
+
+.createreceipt__input.error {
+    border-color: var(--c-error);
+}
+
+.createreceipt__suffix {
+    grid-area: suffix;
+}
+
+.createreceipt__error {
+    grid-area: error;
+}
 
 /* --------------------------------------------------------------------------------------------
                                         UTILITIE
 -------------------------------------------------------------------------------------------- */
+
+/* ------------------------
+          CTA
+------------------------ */
+
+.cta {
+    padding: .5rem 1rem;
+    border: solid 2px var(--c-primary);
+    background-color: transparent;
+    color: var(--c-primary);
+    cursor: pointer;
+    transition: all .15s ease-in;
+}
+
+.cta:hover {
+    background-color: var(--c-primary);
+    color: var(--c-white);
+}

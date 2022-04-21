@@ -1,23 +1,29 @@
-function amountSugarProduct(mass,potential,efficiency){
-    return mass*(potential/100)*(efficiency*100);
+
+/* Give the amount sugar product by a malt */
+function amountSugarProduct( mass, potential, efficiency) {
+    return mass*(potential/100)*(efficiency/100);
 }
 
-function calculDensity(listGrain,volumeBrassin,efficiency){
-    let E = 0;
+/* Give density of total malt in the recipe */
+function calculDensity( listGrain, volumeBrew, efficiency ) {
+  
+    let sumAmountSugarProduct = 0
+    let grain;
 
-    listGrain.forEach(grain =>
-        E += amountSugarProduct(grain.mass,grain.potential,efficiency)
-    )
-
-    return 1+(383* (E/volumeBrassin))/1000;
+    for(grain in listGrain){
+        sumAmountSugarProduct += amountSugarProduct(listGrain[grain].mass, listGrain[grain].potential, efficiency)
+    }
+  
+    return 1+( 383* (sumAmountSugarProduct/volumeBrew ) )/1000;
 }
+
 
 /**
  * On click retrieve the current tab and change the content according to it
  * 
  * @param {event} tabClickEvent 
  */
-function clickOnTab(tabClickEvent) {
+function clickOnTab( tabClickEvent ) {
 
     // Retrieve the tabs that correspond to the different types of ingredients
     let tabs = document.querySelectorAll(".tabs-ingredients__list > li"); 
@@ -45,4 +51,4 @@ function clickOnTab(tabClickEvent) {
     concernedTabPane.classList.add("active");
 }
 
-export {amountSugarProduct, calculDensity, clickOnTab}; 
+export {amountSugarProduct, calculDensity, clickOnTab};
