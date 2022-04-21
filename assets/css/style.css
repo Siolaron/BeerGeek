@@ -33,6 +33,7 @@
 }
 
 html {
+    font-family: sans-serif;
     font-size: var(--fs-m);
     line-height: 1.45;
     font-weight: var(--fw-regular);
