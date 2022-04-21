@@ -1,4 +1,4 @@
-import {amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol} from './helpers.js';
+import {amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol, calculBitterness} from './helpers.js';
 
 /* --------------------------------------------------------------------------------------------
                                       CREATE RECEIPT
@@ -96,7 +96,7 @@ window.addEventListener("load", function() {
 
 /* EXEMPLE calculDensity */ 
 
-
+/* exemple malt */
 let listGrain = {
     acidMalt : {
         "mass" : 12,
@@ -107,10 +107,18 @@ let listGrain = {
         "potential" : 75
     },
 }
-
+/* exemple levure */
 let abbayeBelgian = {
         attenuation :72
-    }
+}
+/* exemple houblon*/
+let listHops = {
+    admiral : {
+        "mass" : 120,
+        "alpha" : 14.75,
+        "duration":30
+    },
+}
 
 
 let DO = calculDensity(listGrain,200,80)
@@ -121,3 +129,6 @@ console.log(FD.toFixed(3))
 
 let rateAlcohol = calculAlcohol(DO,FD)
 console.log(rateAlcohol.toFixed(1))
+
+let bitterness = calculBitterness(DO,listHops,200)
+console.log(bitterness)
