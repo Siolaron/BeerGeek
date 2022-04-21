@@ -1,1 +1,4 @@
-<h1>Hello</h1>
+<?php require_once('./inc/head.php') ?>
+
+
+<?php require_once('./inc/footer.php') ?>
