@@ -3,25 +3,25 @@
 <main>
     <h1>Créer une recette</h1>
     <form action="" class="createreceipt">
-        <label for="receipt_name" class="createreceipt__group">
-            Nom :
+        <div class="createreceipt__group">
+            <label for="receipt_name" class="createreceipt__label">Nom</label>
             <input type="text" name="receipt_name" id="receipt_name" class="createreceipt__input">
-        </label>
-        <label for="receipt_volume" class="createreceipt__group">
-            Volume :
+        </div>
+        <div class="createreceipt__group">
+            <label for="receipt_volume" class="createreceipt__label">Volume</label>
             <input type="number" name="receipt_volume" id="receipt_volume" class="createreceipt__input">
-            litres
-        </label>
-        <label for="receipt_boiling" class="createreceipt__group">
-            Durée ébulition
+            <p class="createreceipt__suffix">litres</p>
+        </div>
+        <div class="createreceipt__group">
+            <label for="receipt_boiling" class="createreceipt__label">Durée ébulition</label>
             <input type="number" name="receipt_boiling" id="receipt_boiling" class="createreceipt__input">
-            minutes
-        </label>
-        <label for="receipt_estimated-efficiency" class="createreceipt__group">
-            Efficacité estimée
+            <p class="createreceipt__suffix">minutes</p>
+        </div>
+        <div class="createreceipt__group">
+            <label for="receipt_estimated-efficiency" class="createreceipt__label">Efficacité estimée</label>
             <input type="number" name="receipt_estimated-efficiency" id="receipt_estimated-efficiency" class="createreceipt__input">
-            %
-        </label>
+            <p class="createreceipt__suffix">%</p>
+        </div>
     </form>
     <ul class="tabreceipt">
         <li class="tabreceipt__line main">
