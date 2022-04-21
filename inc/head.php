@@ -10,3 +10,4 @@
 </head>
 
 <body>
+    <?php require_once('./inc/navbar.php') ?>
