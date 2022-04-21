@@ -134,7 +134,7 @@
                 <label for="add_time" class="form__add-ingredient__label">Temps</label>
                 <input type="text" name="add_time" id="add_time" class="form__add-ingredient__input">
             </div>
-            <input type="submit" value="Ajouter" class="cta disable">
+            <input type="submit" value="Ajouter" class="cta disabled">
         </form>
     </div>
 </main>

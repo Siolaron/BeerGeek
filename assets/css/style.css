@@ -299,3 +299,11 @@ main {
     background-color: var(--c-primary);
     color: var(--c-white);
 }
+
+.cta.disabled {
+    border-color: var(--c-dark-grey);
+    background-color: var(--c-light-grey);
+    color: var(--c-dark-grey);
+    opacity: .75;
+    cursor: not-allowed;
+}
