@@ -2,28 +2,29 @@
 
 <main>
     <h1>Créer une recette</h1>
-    <form class="createreceipt" id="form__createreceipt">
+    <form action="post" class="createreceipt" id="form__createreceipt">
         <div class="createreceipt__group">
             <label for="receipt_name" class="createreceipt__label">Nom</label>
-            <input type="text" name="receipt_name" id="receipt_name" class="createreceipt__input">
+            <input type="text" name="receipt_name" id="receipt_name" class="createreceipt__input" value="Test">
         </div>
         <div class="createreceipt__group">
             <label for="receipt_volume" class="createreceipt__label">Volume</label>
-            <input type="number" name="receipt_volume" id="receipt_volume" min="1" class="createreceipt__input">
+            <input type="number" name="receipt_volume" id="receipt_volume" min="1" class="createreceipt__input" value="1">
             <p class="createreceipt__suffix">litres</p>
         </div>
         <div class="createreceipt__group">
             <label for="receipt_boiling" class="createreceipt__label">Durée ébulition</label>
-            <input type="number" name="receipt_boiling" id="receipt_boiling" min="1" class="createreceipt__input">
+            <input type="number" name="receipt_boiling" id="receipt_boiling" min="1" class="createreceipt__input" value="1">
             <p class="createreceipt__suffix">minutes</p>
         </div>
         <div class="createreceipt__group">
             <label for="receipt_estimated_efficiency" class="createreceipt__label">Efficacité estimée</label>
-            <input type="number" name="receipt_estimated_efficiency" id="receipt_estimated_efficiency" min="1" max="100" class="createreceipt__input">
+            <input type="number" name="receipt_estimated_efficiency" id="receipt_estimated_efficiency" min="1" max="100" class="createreceipt__input" value="1">
             <p class="createreceipt__suffix">%</p>
         </div>
         <input type="submit" value="Créer ma recette" class="cta">
     </form>
+    <button class="cta disabled" id="add_ingredient">Ajouter un ingrédient</button>
     <ul class="tabreceipt">
         <li class="tabreceipt__line main">
             <div class="tabreceipt__item">
@@ -42,7 +43,7 @@
                 <h3>Temps</h3>
             </div>
         </li>
-        <li class="tabreceipt__line">
+        <!-- <li class="tabreceipt__line">
             <div class="tabreceipt__item">
                 <p>Caramunich</p>
             </div>
@@ -58,7 +59,7 @@
             <div class="tabreceipt__item">
                 <p>-----</p>
             </div>
-        </li>
+        </li> -->
     </ul>
 </main>
 

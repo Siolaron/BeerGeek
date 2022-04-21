@@ -119,6 +119,31 @@ main {
 -------------------------------------------------------------------------------------------- */
 
 /* ------------------------
+           TABS
+------------------------ */
+
+.tabs-ingredients__list {
+    display: flex;   
+}
+
+.tabs-ingredients__item.active {
+    font-weight: bold;
+}
+
+.tabs-ingredients__item {
+    padding: 0 1em;
+    cursor: pointer;
+}
+
+.tabs-ingredients .tab-ingredients__pane {
+    display: none;
+}
+
+.tabs-ingredients .tab-ingredients__pane.active {
+    display: block;
+} 
+
+/* ------------------------
        TAB RECEIPT
 ------------------------ */
 
