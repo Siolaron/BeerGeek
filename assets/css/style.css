@@ -49,7 +49,6 @@ img, picture, video, canvas, svg {
 }
 
 :is(a, a:hover, button) {
-    color: inherit;
     text-decoration: none;
 }
 
@@ -168,7 +167,7 @@ main {
 }
 
 /* ------------------------
-    CREATE RECEIPT
+       CREATE RECEIPT
 ------------------------ */
 
 .createreceipt {
@@ -215,6 +214,7 @@ main {
 .modal-ingredients {
     padding: 2rem 1rem;
     display: flex;
+    align-items: flex-end;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -223,6 +223,11 @@ main {
     border: solid 1px var(--c-black);
     border-radius: 5px;
     background-color: var(--c-white);
+}
+
+.modal-ingredients__pane {
+    max-height: 10rem;
+    overflow-y: scroll;
 }
 
 /* --------------------------------------------------------------------------------------------

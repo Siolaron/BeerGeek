@@ -67,19 +67,52 @@
             <h2>Ajouter un ingrédient</h2>
             <div class="tabs-ingredients">
                 <ul class="tabs-ingredients__list">
-                    <li class="tabs-ingredients__item active" data-ingredient="malts">Tab 1</li>
-                    <li class="tabs-ingredients__item" data-ingredient="houblons">Tab 2</li>
-                    <li class="tabs-ingredients__item" data-ingredient="levures">Tab 3</li>
+                    <li class="tabs-ingredients__item active" data-ingredient="malts">Malt</li>
+                    <li class="tabs-ingredients__item" data-ingredient="houblons">Houblon</li>
+                    <li class="tabs-ingredients__item" data-ingredient="levures">Levure</li>
                 </ul>
                 <div class="tabs-ingredients__content">
-                    <div id="malts" class="tab-ingredients__pane active">
-                        <h3>Ingredient 1</h3>
+                    <div id="malts" class="tab-ingredients__pane active  modal-ingredients__pane">
+                        <ul class="modal-ingredients__list">
+                            <?php
+                            $json_malts = file_get_contents('./assets/datas/malts.json');
+                            $malts = json_decode($json_malts, true);
+                            foreach ($malts['data'] as $malt) :
+                                $subject =  $malt['INVENTORY'];
+                                $pattern = '/[^0-9]/';
+                                $quantity = str_replace(' kg', '', $malt['INVENTORY']);
+                            ?>
+                                <li class="tab-ingredients__list-item" data-quantity="<?= $quantity ?>"><?= $malt['NAME'] . ' (' . $quantity . ' kgs)' ?></li>
+                            <?php endforeach; ?>
+                        </ul>
                     </div>
-                    <div id="houblons" class="tab-ingredients__pane">
-                        <h3>Ingredient 2</h3>
+                    <div id="houblons" class="tab-ingredients__pane modal-ingredients__pane">
+                        <ul class="tab-ingredients__list">
+                            <?php
+                            $json_hops = file_get_contents('./assets/datas/hops.json');
+                            $hops = json_decode($json_hops, true);
+                            foreach ($hops['data'] as $hop) :
+                                $subject =  $hop['INVENTORY'];
+                                $pattern = '/[^0-9]/';
+                                $quantity = str_replace(' g', '', $hop['INVENTORY']);
+                            ?>
+                                <li class="tab-ingredients__list-item" data-quantity="<?= $quantity ?>"><?= $hop['NAME'] . ' (' . $quantity . ' grs)' ?></li>
+                            <?php endforeach; ?>
+                        </ul>
                     </div>
-                    <div id="levures" class="tab-ingredients__pane">
-                        <h3>Ingredient 3</h3>
+                    <div id="levures" class="tab-ingredients__pane  modal-ingredients__pane">
+                        <ul class="tab-ingredients__list">
+                            <?php
+                            $json_yeasts = file_get_contents('./assets/datas/yeasts.json');
+                            $yeasts = json_decode($json_yeasts, true);
+                            foreach ($yeasts['data'] as $yeast) :
+                                $subject =  $yeast['INVENTORY'];
+                                $pattern = '/[^0-9]/';
+                                $quantity = str_replace(' pkg', '', $yeast['INVENTORY']);
+                            ?>
+                                <li class="tab-ingredients__list-item" data-quantity="<?= $quantity ?>"><?= $yeast['NAME'] . ' (' . $quantity . ' ml)' ?></li>
+                            <?php endforeach; ?>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -87,16 +120,20 @@
         <div class="modal-ingredients__rightcontent">
             <form action="" method="post" id="form__add-ingredient" class="form__add-ingredient">
                 <div class="form__add-ingredient__group">
-                    <label for=""></label>
-                    <input type="text">
+                    <label for="add_quantity">Quantité</label>
+                    <input type="number" name="add_quantity" id="add_quantity" min="1">
                 </div>
                 <div class="form__add-ingredient__group">
-                    <label for=""></label>
-                    <input type="text">
+                    <label for="add_step">Etape d'ajout</label>
+                    <select name="add_step" id="add_step">
+                        <option value="empatage">Empatage</option>
+                        <option value="ebulition">Ebulition</option>
+                        <option value="fermentation">Fermentation</option>
+                    </select>
                 </div>
                 <div class="form__add-ingredient__group">
-                    <label for=""></label>
-                    <input type="text">
+                    <label for="add_time">Temps</label>
+                    <input type="text" name="add_time" id="add_time">
                 </div>
             </form>
         </div>
