@@ -41,6 +41,17 @@ function finalDensity(originelDensity,attenuation){
 
     return 1+(((originelDensity*1000-1000)*(1-attenuation/100))/1000)
 }
+
+/** Give alcochol rate
+ *
+ * @param originelDensity
+ * @param finalDensity
+ * @return {number}
+ */
+function calculAlcohol(originelDensity, finalDensity){
+    return ((originelDensity*1000)-(finalDensity*1000))/7.6
+}
+
 /**
  * On click retrieve the current tab and change the content according to it
  * 
@@ -74,4 +85,4 @@ function clickOnTab( tabClickEvent ) {
     concernedTabPane.classList.add("active");
 }
 
-export {amountSugarProduct, calculDensity, clickOnTab, finalDensity};
+export {amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol};

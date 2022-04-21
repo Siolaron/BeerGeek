@@ -1,4 +1,4 @@
-import {amountSugarProduct, calculDensity, clickOnTab, finalDensity} from './helpers.js';
+import {amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol} from './helpers.js';
 
 /* --------------------------------------------------------------------------------------------
                                       CREATE RECEIPT
@@ -103,7 +103,7 @@ let listGrain = {
         "potential" : 58.7
     },
     amberMalt : {
-        "mass" : 2,
+        "mass" : 12,
         "potential" : 75
     },
 }
@@ -118,3 +118,6 @@ console.log(DO.toFixed(3))
 
 let FD = finalDensity(DO.toFixed(3),abbayeBelgian["attenuation"])
 console.log(FD.toFixed(3))
+
+let rateAlcohol = calculAlcohol(DO,FD)
+console.log(rateAlcohol.toFixed(1))
