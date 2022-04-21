@@ -1,4 +1,4 @@
-import {amountSugarProduct, calculDensity, clickOnTab} from './helpers.js';
+import {amountSugarProduct, calculDensity, clickOnTab, finalDensity} from './helpers.js';
 
 /* ---------------------------------
         CREATE RECEIPT
@@ -92,7 +92,7 @@ window.addEventListener("load", function() {
 
 /* EXEMPLE calculDensity */ 
 
-/*
+
 let listGrain = {
     acidMalt : {
         "mass" : 12,
@@ -104,6 +104,13 @@ let listGrain = {
     },
 }
 
-let test = calculDensity(listGrain,200,80)
+let abbayeBelgian = {
+        attenuation :72
+    }
 
-console.log(test)*/
+
+let DO = calculDensity(listGrain,200,80)
+console.log(DO.toFixed(3))
+
+let FD = finalDensity(DO.toFixed(3),abbayeBelgian["attenuation"])
+console.log(FD.toFixed(3))
