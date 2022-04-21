@@ -1,8 +1,8 @@
 import {amountSugarProduct, calculDensity, clickOnTab} from './helpers.js';
 
-/* ---------------------------------
-        CREATE RECEIPT
---------------------------------- */
+/* --------------------------------------------------------------------------------------------
+                                      CREATE RECEIPT
+-------------------------------------------------------------------------------------------- */
 
 function checkCreateReceipt(e) {
     e.preventDefault()
@@ -53,6 +53,9 @@ function checkCreateReceipt(e) {
 }
 
 function setErrorCreateReceipt(input, message) {
+    // Disabled add ingredient button
+    document.getElementById('add_ingredient').classList.add('disabled')
+
     // Add error class
     input.classList.add('error')
 
@@ -71,7 +74,8 @@ function setErrorCreateReceipt(input, message) {
 }
 
 function validateCreateReceipt() {
-    console.log('validate');
+    // Enable add ingredient button
+    document.getElementById('add_ingredient').classList.remove('disabled')
 }
 
 window.addEventListener("load", function() {
