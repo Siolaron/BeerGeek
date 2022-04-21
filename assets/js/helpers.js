@@ -1,10 +1,24 @@
 
-/* Give the amount sugar product by a malt */
+/** Give the amount sugar product by a malt
+ *
+ * @param mass
+ * @param potential
+ * @param efficiency
+ *
+ * @return number
+ */
 function amountSugarProduct( mass, potential, efficiency) {
     return mass*(potential/100)*(efficiency/100);
 }
 
-/* Give density of total malt in the recipe */
+/** Give density of total malt in the recipe
+ *
+ * @param listGrain
+ * @param volumeBrew
+ * @param efficiency
+ *
+ * @return number
+ * */
 function calculDensity( listGrain, volumeBrew, efficiency ) {
   
     let sumAmountSugarProduct = 0
@@ -17,7 +31,16 @@ function calculDensity( listGrain, volumeBrew, efficiency ) {
     return 1+( 383* (sumAmountSugarProduct/volumeBrew ) )/1000;
 }
 
+/** Give final density
+ *
+ * @param originelDensity
+ * @param attenuation
+ * @return {number}
+ */
+function finalDensity(originelDensity,attenuation){
 
+    return 1+(((originelDensity*1000-1000)*(1-attenuation/100))/1000)
+}
 /**
  * On click retrieve the current tab and change the content according to it
  * 
@@ -51,4 +74,4 @@ function clickOnTab( tabClickEvent ) {
     concernedTabPane.classList.add("active");
 }
 
-export {amountSugarProduct, calculDensity, clickOnTab};
+export {amountSugarProduct, calculDensity, clickOnTab, finalDensity};
