@@ -15,7 +15,7 @@
 
     /* Font size */
     --fs-ratio: 1.2;
-    --fs-sm: calc(var(--fs-m) / var(--fs-ratio));
+    --fs-s: calc(var(--fs-m) / var(--fs-ratio));
     --fs-m: 1em;
     --fs-l: calc(var(--fs-m)* var(--fs-ratio));
     --fs-xl: calc(var(--fs-l)* var(--fs-ratio));
@@ -59,6 +59,22 @@ h1, h2, h3, h4, h5, h6, p, blockquote {
     max-width: 80ch;
 }
 
+h1 {
+    font-size: var(--fs-xl);
+}
+
+h2 {
+    font-size: var(--fs-l);
+}
+
+h3 {
+    font-size: var(--fs-m);
+}
+
+h4 {
+    font-size: var(--fs-s);
+}
+
 /* --------------------------------------------------------------------------------------------
                                         LAYOUT
 -------------------------------------------------------------------------------------------- */
@@ -83,6 +99,15 @@ body {
 
 main {
     grid-area: content;
+}
+
+/* ------------------------
+      CREATE RECEIPT
+------------------------ */
+
+.createreceipt {
+    display: flex;
+    column-gap: 3rem;
 }
 
 
@@ -113,6 +138,27 @@ main {
 .tabreceipt__item {
     padding: .5rem;
     border: solid 1px var(--c-black);
+}
+
+/* ------------------------
+    CREATE RECEIPT
+------------------------ */
+
+.createreceipt {
+    margin: 1rem 0;
+}
+
+.createreceipt__group {
+    display: flex;
+    column-gap: .5rem;
+}
+
+.createreceipt__label {
+    font-weight: var(--fw-semi_bold);
+}
+
+.createreceipt__input {
+    padding-inline: .25rem;
 }
 
 /* --------------------------------------------------------------------------------------------
