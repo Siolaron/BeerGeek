@@ -78,6 +78,100 @@ function validateCreateReceipt() {
     document.getElementById('add_ingredient').classList.remove('disabled')
 }
 
+/**
+ * Fetch data from file
+ * 
+ * @param {String} ingredientType 
+ */
+function fetchDataJson(ingredientType) {
+    let typeName = ingredientType[0];
+    let fileIngredientType = ingredientType[1];
+
+     /* READ JSON DATA */
+    fetch(fileIngredientType)
+    .then(response => {
+        return response.json();
+    })
+    .then(function(ingredients) {
+        traitmentDataIngredients(ingredients, typeName);
+    });
+}
+
+/**
+ * For each ingredient we create an item in the table, we assign it to a line and this line is then added to the corresponding tab
+ * 
+ * @param {Array} ingredients 
+ * @param {String} typeName 
+ */
+ function traitmentDataIngredients(ingredients, typeName) {
+
+    ingredients = ingredients.data;
+
+    for (const ingredient of Object.entries(ingredients)) {
+        let parent = document.querySelector('#' + typeName + ' .tabreceipt');
+
+        let divs = createItemsArray(typeName, ingredient);
+
+        let li = document.createElement('li');
+        li.setAttribute('class','tabreceipt__line');
+        for (const oneDiv of Object.entries(divs)) {
+            li.append(oneDiv[1]);
+        }
+        parent.appendChild(li);
+    }  
+}
+
+/**
+ * Create div and assign text to it
+ * 
+ * @param {String} text 
+ * @returns 
+ */
+function createDiv(text) {
+    let div = document.createElement('div');
+    div.setAttribute('class','tabreceipt__item');
+
+    let p = document.createElement('p');
+    p.textContent = text;
+
+    div.appendChild(p);
+
+    return div;
+}
+
+/**
+ * We get several pieces of information, we assign them to divs and we add these divs to the line
+ * 
+ * @param {String} typeName 
+ * @param {Array} ingredient 
+ * @returns 
+ */
+function createItemsArray(typeName, ingredient) {
+    let divName;
+    let divType;
+    let divLaboratory;
+    let divOrigin;
+    let divQuantity = createDiv('1,00 oz');
+
+    if(typeName === 'yeasts') {
+
+        divName = createDiv(ingredient[1]['NAME']);
+        divType = createDiv(ingredient[1]['TYPE']);
+        divLaboratory = createDiv(ingredient[1]['LABORATORY']);
+        
+        return { divName, divType, divLaboratory, divQuantity };
+
+    } else {
+        
+        divName = createDiv(ingredient[1]['NAME']);
+        divType = createDiv(ingredient[1]['TYPE']);
+        divOrigin = createDiv(ingredient[1]['ORIGIN']);
+        
+        return { divName, divType, divOrigin, divQuantity };
+    }
+    
+}
+
 window.addEventListener("load", function() {
 
     /* TABS */
@@ -88,9 +182,22 @@ window.addEventListener("load", function() {
 	for (let i = 0; i < tabs.length; i++) {
 		tabs[i].addEventListener( "click", clickOnTab);
 	}
-  
+
+    /* INFOS INGREDIENTS */
+    let allIngredientsUrl = 
+    {
+        hops: "./assets/datas/hops.json", 
+        malts: "./assets/datas/malts.json", 
+        yeasts: "./assets/datas/yeasts.json"
+    };
+
+    //For each file get the data from it
+    for (const ingredientType of Object.entries(allIngredientsUrl)) {
+        fetchDataJson(ingredientType);
+    } 
+    
   /* CREATE RECEIPT */
-  document.getElementById('form__createreceipt').addEventListener('submit', checkCreateReceipt)
+  document.getElementById('form__createreceipt').addEventListener('submit', checkCreateReceipt);
     
 });
 
