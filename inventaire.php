@@ -5,8 +5,8 @@
     <div class="tabs-ingredients">
 		<ul class="tabs-ingredients__list">
 			<li class="tabs-ingredients__item active" data-ingredient="malts">Tab 1</li>
-			<li class="tabs-ingredients__item" data-ingredient="houblons">Tab 2</li>
-			<li class="tabs-ingredients__item" data-ingredient="levures">Tab 3</li>
+			<li class="tabs-ingredients__item" data-ingredient="hops">Tab 2</li>
+			<li class="tabs-ingredients__item" data-ingredient="yeasts">Tab 3</li>
 		</ul>
 		<div class="tabs-ingredients__content">
 			<div id="malts" class="tab-ingredients__pane active"> 
@@ -41,7 +41,7 @@
 					</li>
 				</ul>
 			</div> 
-			<div id="houblons" class="tab-ingredients__pane">
+			<div id="hops" class="tab-ingredients__pane">
 				<ul class="tabreceipt">
 					<li class="tabreceipt__line main">
 						<div class="tabreceipt__item">
@@ -73,7 +73,7 @@
 					</li>
 				</ul>
 			</div>
-			<div id="levures" class="tab-ingredients__pane">
+			<div id="yeasts" class="tab-ingredients__pane">
 			<ul class="tabreceipt">
 					<li class="tabreceipt__line main">
 						<div class="tabreceipt__item">
