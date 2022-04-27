@@ -1,4 +1,4 @@
-import { amountSugarProduct, calculDensity, clickOnTab } from './helpers.js'
+import { amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol } from './helpers.js';
 
 /* --------------------------------------------------------------------------------------------
                                       FUNCTIONS
@@ -298,3 +298,29 @@ window.addEventListener("load", function () {
     if (form_addingredient != null)
         form_addingredient.addEventListener('submit', checkAddIngredient)
 })
+
+/* EXEMPLE calculDensity */
+
+let listGrain = {
+    acidMalt: {
+        "mass": 12,
+        "potential": 58.7
+    },
+    amberMalt: {
+        "mass": 12,
+        "potential": 75
+    },
+}
+
+let abbayeBelgian = {
+    attenuation: 72
+}
+
+let DO = calculDensity(listGrain, 200, 80)
+console.log(DO.toFixed(3))
+
+let FD = finalDensity(DO.toFixed(3), abbayeBelgian["attenuation"])
+console.log(FD.toFixed(3))
+
+let rateAlcohol = calculAlcohol(DO, FD)
+console.log(rateAlcohol.toFixed(1))

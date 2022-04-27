@@ -158,6 +158,10 @@ main {
     grid-template-areas: 'name type quantity step time';
 }
 
+.tabs-ingredients .tabreceipt__line {
+    grid-template-columns: repeat(4, 1fr);
+}
+
 .tabreceipt__line.main {
     background-color: var(--c-light-grey);
 }
