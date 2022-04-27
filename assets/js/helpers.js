@@ -1,4 +1,36 @@
 
+const EBCtoRGB = {
+    1 : "#F3F993",
+    2 : "#F5F75C",
+    3 : "#F6F513",
+    4 : "#EAE615",
+    5 : "#E0D01B",
+    6 : "#D5BC26",
+    7 : "#CDAA37",
+    8 : "#C1963C",
+    9 : "#BE8C3A",
+    10 : "#BE823A",
+    11 : "#C17A37",
+    12 : "#BF7138",
+    13 : "#BC6733",
+    14 : "#B26033",
+    15 : "#A85839",
+    16 : "#985336",
+    17 : "#8D4C32",
+    18 : "#7C452D",
+    19 : "#6B3A1E",
+    20 : "#5D341A",
+    21 : "#4E2A0C",
+    22 : "#4A2727",
+    23 : "#361F1B",
+    24 : "#261716",
+    25 : "#231716",
+    26 : "#19100F",
+    27 : "#16100F",
+    28 : "#120D0C",
+    29 : "#100B0A",
+    30 : "#050B0A",
+}
 /** Give the amount sugar product by a malt
  *
  * @param mass
@@ -87,6 +119,42 @@ function calculBitterness(originelDensity, listHops,volumeBrew){
     return Math.round(sumBitternessBeer*10)/10
 }
 
+/**Gives MCU for each malt
+ *
+ * @param mass
+ * @param ebc
+ * @param volumeBrew
+ * @return {number}
+ */
+function sumMCU(mass,ebc,volumeBrew){
+    return 4.24*mass*ebc/volumeBrew
+}
+
+/**Gives EBC color of beer
+ *
+ * @param listGrain
+ * @param volumeBrew
+ * @return {number}
+ */
+function calculColorEBC(listGrain,volumeBrew){
+    let totalMCU = 0;
+    let malt
+
+    for(malt in listGrain){
+        totalMCU += sumMCU(listGrain[malt].mass,listGrain[malt].ebc,volumeBrew)
+    }
+
+    return 2.94*Math.pow(totalMCU,0.6859)
+}
+
+/** Gives RGB of EBC
+ *
+ * @param ebc
+ * @return {*}
+ */
+function giveEBCtoRGB(ebc){
+    return EBCtoRGB[ebc]
+}
 /**
  * On click retrieve the current tab and change the content according to it
  * 
@@ -120,4 +188,4 @@ function clickOnTab( tabClickEvent ) {
     concernedTabPane.classList.add("active");
 }
 
-export {amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol, calculBitterness};
+export {amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol, calculBitterness, calculColorEBC, giveEBCtoRGB};
