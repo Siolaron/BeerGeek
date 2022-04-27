@@ -7,7 +7,8 @@
     --c-secondary: #FD8008;
     --c-primary: #0F80FF;
     --c-error: #ea1c1c;
-    --c-grey: #d0d0d0;
+    --c-light-grey: #d0d0d0;
+    --c-dark-grey: #575757;
     --c-black: #000000;
     --c-white: #FFFFFF;
 
@@ -49,7 +50,6 @@ img, picture, video, canvas, svg {
 }
 
 :is(a, a:hover, button) {
-    color: inherit;
     text-decoration: none;
 }
 
@@ -123,7 +123,7 @@ main {
 ------------------------ */
 
 .tabs-ingredients__list {
-    display: flex;   
+    display: flex;
 }
 
 .tabs-ingredients__item.active {
@@ -141,7 +141,7 @@ main {
 
 .tabs-ingredients .tab-ingredients__pane.active {
     display: block;
-} 
+}
 
 /* ------------------------
        TAB RECEIPT
@@ -163,7 +163,7 @@ main {
 }
 
 .tabreceipt__line.main {
-    background-color: var(--c-grey);
+    background-color: var(--c-light-grey);
 }
 
 .tabreceipt__item {
@@ -172,7 +172,7 @@ main {
 }
 
 /* ------------------------
-    CREATE RECEIPT
+       CREATE RECEIPT
 ------------------------ */
 
 .createreceipt {
@@ -212,6 +212,118 @@ main {
     grid-area: error;
 }
 
+/* ------------------------
+    MODAL INGREDIENT
+------------------------ */
+
+.modal-ingredients {
+    padding: 2rem 1rem;
+    display: none;
+    grid-template-columns: repeat(2, max(15vw, 350px));
+    column-gap: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    border: solid 1px var(--c-black);
+    border-radius: 5px;
+    background-color: var(--c-white);
+}
+
+/* Tabs */
+
+.modal-tabs {
+    margin: 1rem 0 .5rem;
+}
+
+/* Cross */
+
+.modal-ingredients__cross {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 50%;
+    background-color: var(--c-light-grey);
+    cursor: pointer;
+}
+
+.modal-ingredients__cross::before, .modal-ingredients__cross::after {
+    content: '';
+    width: 13px;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background-color: var(--c-black);
+}
+
+.modal-ingredients__cross::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Listing */
+
+.modal-ingredients__pane {
+    max-height: 10rem;
+    overflow-y: scroll;
+}
+
+.tab-ingredients__list-item {
+    padding: .35rem .5rem;
+    border: solid 1px var(--c-black);
+    font-size: var(--fs-s);
+    cursor: pointer;
+}
+
+.tab-ingredients__list-item+.tab-ingredients__list-item {
+    border-top: none;
+}
+
+.tab-ingredients__list-item:is(:hover, .selected) {
+    background-color: var(--c-light-grey);
+}
+
+/* Form */
+
+.form__add-ingredient {
+    align-self: flex-end;
+}
+
+.form__add-ingredient__group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form__add-ingredient__group+.form__add-ingredient__group {
+    margin-top: .5rem;
+}
+
+.form__add-ingredient__label {
+    margin-bottom: .25rem;
+    color: var(--c-dark-grey);
+    font-size: var(--fs-s);
+}
+
+.form__add-ingredient__inputgroup {
+    display: grid;
+    grid-template-columns: 50% 1fr;
+    align-items: center;
+    column-gap: 1rem;
+}
+
+.form__add-ingredient__input {
+    padding: .35rem;
+    font-size: var(--fs-m);
+}
+
+.form__add-ingredient input[type="submit"] {
+    margin-top: 1rem;
+}
+
 /* --------------------------------------------------------------------------------------------
                                         UTILITIE
 -------------------------------------------------------------------------------------------- */
@@ -232,4 +344,12 @@ main {
 .cta:hover {
     background-color: var(--c-primary);
     color: var(--c-white);
+}
+
+.cta.disabled {
+    border-color: var(--c-dark-grey);
+    background-color: var(--c-light-grey);
+    color: var(--c-dark-grey);
+    opacity: .75;
+    pointer-events: none;
 }
