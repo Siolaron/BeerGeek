@@ -1,9 +1,16 @@
-import {amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol, calculBitterness} from './helpers.js';
+import { amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol } from './helpers.js';
 
 /* --------------------------------------------------------------------------------------------
-                                      CREATE RECEIPT
+                                      FUNCTIONS
 -------------------------------------------------------------------------------------------- */
 
+/* ----------------------
+    CREATE RECEIPT
+---------------------- */
+
+/**
+ * Check the create receipt form
+ */
 function checkCreateReceipt(e) {
     e.preventDefault()
     let form_createreceipt = e.target
@@ -31,7 +38,6 @@ function checkCreateReceipt(e) {
     }
 
     // Check boiling
-
     if (receipt_boiling.value == '' || receipt_boiling.value == null || receipt_boiling.value == 'undefined') {
         setErrorCreateReceipt(receipt_boiling, 'Ce champ est incorrect')
         validate_boiling = false
@@ -52,6 +58,9 @@ function checkCreateReceipt(e) {
 
 }
 
+/**
+ * Create error message
+ */
 function setErrorCreateReceipt(input, message) {
     // Disabled add ingredient button
     document.getElementById('add_ingredient').classList.add('disabled')
@@ -68,174 +77,250 @@ function setErrorCreateReceipt(input, message) {
 
     // Focus listener to remove error
     input.addEventListener('focus', function () {
+        // Remove class
         input.classList.remove('error')
+        // Remove message
         errorMessage.remove()
     })
 }
 
+/**
+ * Called to unable add ingredient button
+ */
 function validateCreateReceipt() {
     // Enable add ingredient button
     document.getElementById('add_ingredient').classList.remove('disabled')
+    // Add event listener
+    let btn_add_ingredient = document.getElementById('add_ingredient')
+    btn_add_ingredient.addEventListener('click', openModalToAddIngredient)
+}
+
+/* ----------------------
+    ADD INGREDIENT
+---------------------- */
+
+/**
+ * Open modal to add an ingredient
+ */
+function openModalToAddIngredient() {
+    let modal = document.getElementById('modal-ingredients')
+    modal.style.display = 'grid'
 }
 
 /**
- * Fetch data from file
- * 
- * @param {String} ingredientType 
+ * Close modal to add an ingredient
  */
-function fetchDataJson(ingredientType) {
-    let typeName = ingredientType[0];
-    let fileIngredientType = ingredientType[1];
-
-     /* READ JSON DATA */
-    fetch(fileIngredientType)
-    .then(response => {
-        return response.json();
-    })
-    .then(function(ingredients) {
-        traitmentDataIngredients(ingredients, typeName);
-    });
+function closeModalToAddIngredient() {
+    let modal = document.getElementById('modal-ingredients')
+    modal.style.display = 'none'
 }
 
 /**
- * For each ingredient we create an item in the table, we assign it to a line and this line is then added to the corresponding tab
- * 
- * @param {Array} ingredients 
- * @param {String} typeName 
+ * Select an ingredient to choose the form's inputs
  */
- function traitmentDataIngredients(ingredients, typeName) {
+function selectIngredientInModal(e) {
+    // Variables
+    let selected_ingredient = e.target
+    let max_quantity = selected_ingredient.dataset.quantity
+    let suffix_value = selected_ingredient.dataset.suffix
+    let selected_name = selected_ingredient.dataset.name
+    let selected_type = selected_ingredient.dataset.type
+    let input_quantity = document.getElementById('add_quantity')
+    let input_time = document.getElementById('add_time')
+    let input_ingredient_name = document.getElementById('add_ingredient_name')
+    let input_ingredient_type = document.getElementById('add_ingredient_type')
+    let suffix_container = document.getElementById('add_quantity_suffix')
 
-    ingredients = ingredients.data;
+    // Remove the previous ingredient selected if there is any
+    let previous_ingredient = document.querySelector('.tab-ingredients__list-item.selected')
+    if (previous_ingredient != null)
+        previous_ingredient.classList.remove('selected')
 
-    for (const ingredient of Object.entries(ingredients)) {
-        let parent = document.querySelector('#' + typeName + ' .tabreceipt');
+    // Toggle the class 'selected' for the target
+    selected_ingredient.classList.toggle('selected')
 
-        let divs = createItemsArray(typeName, ingredient);
+    // Clear inputs
+    input_quantity.value = ''
+    input_time.value = ''
+    input_ingredient_name.value = ''
+    input_ingredient_type.value = ''
 
-        let li = document.createElement('li');
-        li.setAttribute('class','tabreceipt__line');
-        for (const oneDiv of Object.entries(divs)) {
-            li.append(oneDiv[1]);
-        }
-        parent.appendChild(li);
-    }  
+    // Set the correct suffix
+    suffix_container.innerText = suffix_value
+
+    // Set the max quantity
+    input_quantity.setAttribute('max', max_quantity)
+
+    // Set the correct hidden input
+    input_ingredient_name.value = selected_name
+    input_ingredient_type.value = selected_type
 }
 
 /**
- * Create div and assign text to it
- * 
- * @param {String} text 
- * @returns 
+ * Check all the parameters before adding new ingredient
  */
-function createDiv(text) {
-    let div = document.createElement('div');
-    div.setAttribute('class','tabreceipt__item');
+function checkAddIngredient(e) {
+    e.preventDefault()
+    let form_addingredient = e.target
+    let validate_name, validate_quantity, validate_step, validate_time
+    let new_ingredient = []
+    // Get the values
+    let ingredient_name = form_addingredient.querySelector('#add_ingredient_name')
+    let ingredient_type = form_addingredient.querySelector('#add_ingredient_type')
+    let ingredient_quantity = form_addingredient.querySelector('#add_quantity')
+    let ingredient_step = form_addingredient.querySelector('#add_step')
+    let ingredient_time = form_addingredient.querySelector('#add_time')
 
-    let p = document.createElement('p');
-    p.textContent = text;
-
-    div.appendChild(p);
-
-    return div;
-}
-
-/**
- * We get several pieces of information, we assign them to divs and we add these divs to the line
- * 
- * @param {String} typeName 
- * @param {Array} ingredient 
- * @returns 
- */
-function createItemsArray(typeName, ingredient) {
-    let divName;
-    let divType;
-    let divLaboratory;
-    let divOrigin;
-    let divQuantity = createDiv('1,00 oz');
-
-    if(typeName === 'yeasts') {
-
-        divName = createDiv(ingredient[1]['NAME']);
-        divType = createDiv(ingredient[1]['TYPE']);
-        divLaboratory = createDiv(ingredient[1]['LABORATORY']);
-        
-        return { divName, divType, divLaboratory, divQuantity };
-
+    // Check name
+    if (ingredient_name.value == '' || ingredient_name.value == null || ingredient_name.value == 'undefined') {
+        setErrorAddIngredient('Aucun ingrédient n\'a été séléectionné')
+        validate_name = false
     } else {
-        
-        divName = createDiv(ingredient[1]['NAME']);
-        divType = createDiv(ingredient[1]['TYPE']);
-        divOrigin = createDiv(ingredient[1]['ORIGIN']);
-        
-        return { divName, divType, divOrigin, divQuantity };
+        validate_name = true
+        new_ingredient['name'] = ingredient_name.value
     }
-    
+
+    // Check type
+    if (ingredient_type.value == '' || ingredient_type.value == null || ingredient_type.value == 'undefined') {
+        setErrorAddIngredient('Aucun ingrédient n\'a été séléectionné')
+        validate_name = false
+    } else {
+        validate_name = true
+        new_ingredient['type'] = ingredient_type.value
+    }
+
+    // Check quantity
+    if (ingredient_quantity.value == '' || ingredient_quantity.value == null || ingredient_quantity.value == 'undefined') {
+        setErrorAddIngredient('La quantité choisie n\'est pas valide')
+        validate_quantity = false
+    } else {
+        validate_quantity = true
+        new_ingredient['quantity'] = ingredient_quantity.value
+    }
+
+    // Check step
+    if (ingredient_step.value == '' || ingredient_step.value == null || ingredient_step.value == 'undefined') {
+        setErrorAddIngredient('Aucune étape n\'a été sélectionnée')
+        ingredient_step = false
+    } else {
+        validate_step = true
+        new_ingredient['step'] = ingredient_step.value
+    }
+
+    // Check time
+    if (ingredient_time.value == '' || ingredient_time.value == null || ingredient_time.value == 'undefined') {
+        setErrorAddIngredient('Le temps choisi n\'est pas valide')
+        validate_time = false
+    } else {
+        validate_time = true
+        new_ingredient['time'] = ingredient_time.value
+    }
+
+    if (validate_name && validate_quantity && validate_step && validate_time)
+        validateAddIngredient(new_ingredient)
 }
 
-window.addEventListener("load", function() {
+function setErrorAddIngredient(message) {
+    console.log(message);
+}
 
-    /* TABS */
-	// Retrieve the tabs that correspond to the different types of ingredients
-	let tabs = document.querySelectorAll(".tabs-ingredients__list > li");
+function validateAddIngredient(new_ingredient) {
+    let tab_receipt = document.getElementById("tab_receipt")
 
-    //For each tab, add a listener to the click
-	for (let i = 0; i < tabs.length; i++) {
-		tabs[i].addEventListener( "click", clickOnTab);
-	}
+    // Create template and clone it
+    let template = document.getElementById("template_ingredient_line")
+    let clone = document.importNode(template.content, true);
 
-    /* INFOS INGREDIENTS */
-    let allIngredientsUrl = 
-    {
-        hops: "./assets/datas/hops.json", 
-        malts: "./assets/datas/malts.json", 
-        yeasts: "./assets/datas/yeasts.json"
-    };
+    // Lines container
+    let name_case = clone.querySelector('.tabreceipt__item.name')
+    let type_case = clone.querySelector('.tabreceipt__item.type')
+    let quantity_case = clone.querySelector('.tabreceipt__item.quantity')
+    let step_case = clone.querySelector('.tabreceipt__item.step')
+    let time_case = clone.querySelector('.tabreceipt__item.time')
 
-    //For each file get the data from it
-    for (const ingredientType of Object.entries(allIngredientsUrl)) {
-        fetchDataJson(ingredientType);
-    } 
-    
-  /* CREATE RECEIPT */
-  document.getElementById('form__createreceipt').addEventListener('submit', checkCreateReceipt);
-    
-});
+    // Fill the cases
+    name_case.innerText = new_ingredient.name
+    type_case.innerText = new_ingredient.type
+    quantity_case.innerText = new_ingredient.quantity
+    step_case.innerText = new_ingredient.step
+    time_case.innerText = new_ingredient.time
 
-/* EXEMPLE calculDensity */ 
+    // Set the new line on our tab
+    tab_receipt.appendChild(clone)
 
-/* exemple malt */
+    // Close the modal
+    closeModalToAddIngredient()
+}
+
+
+
+/* --------------------------------------------------------------------------------------------
+                                    CALLS TO FUNCTION
+-------------------------------------------------------------------------------------------- */
+
+window.addEventListener("load", function () {
+
+    /* ----------------------
+              TABS
+    ---------------------- */
+    // Retrieve the tabs that correspond to the different types of ingredients
+    let tabs = document.querySelectorAll(".tabs-ingredients__list > li")
+    if (tabs != null)
+        //For each tab, add a listener to the click
+        for (let i = 0; i < tabs.length; i++) {
+            tabs[i].addEventListener("click", clickOnTab)
+        }
+
+    /* ----------------------
+          CREATE RECEIPT
+    ---------------------- */
+    let form_createreceipt = document.getElementById('form__createreceipt')
+    if (form_createreceipt != null)
+        form_createreceipt.addEventListener('submit', checkCreateReceipt)
+
+    /* ----------------------
+          ADD INGREDIENT
+    ---------------------- */
+    /* Close modal */
+    let modal_cross = document.getElementById('modal-cross')
+    if (modal_cross != null)
+        modal_cross.addEventListener('click', closeModalToAddIngredient)
+
+    /* Select Ingredient */
+    let ingredients = document.querySelectorAll('.tab-ingredients__list-item')
+    if (ingredients != null)
+        ingredients.forEach(ingredient => {
+            ingredient.addEventListener('click', selectIngredientInModal)
+        })
+
+    /* Check form */
+    let form_addingredient = document.getElementById('form__add-ingredient')
+    if (form_addingredient != null)
+        form_addingredient.addEventListener('submit', checkAddIngredient)
+})
+
+/* EXEMPLE calculDensity */
+
 let listGrain = {
-    acidMalt : {
-        "mass" : 12,
-        "potential" : 58.7
+    acidMalt: {
+        "mass": 12,
+        "potential": 58.7
     },
-    amberMalt : {
-        "mass" : 12,
-        "potential" : 75
+    amberMalt: {
+        "mass": 12,
+        "potential": 75
     },
 }
-/* exemple levure */
+
 let abbayeBelgian = {
-        attenuation :72
-}
-/* exemple houblon*/
-let listHops = {
-    admiral : {
-        "mass" : 120,
-        "alpha" : 14.75,
-        "duration":30
-    },
+    attenuation: 72
 }
 
-
-let DO = calculDensity(listGrain,200,80)
+let DO = calculDensity(listGrain, 200, 80)
 console.log(DO.toFixed(3))
 
-let FD = finalDensity(DO.toFixed(3),abbayeBelgian["attenuation"])
+let FD = finalDensity(DO.toFixed(3), abbayeBelgian["attenuation"])
 console.log(FD.toFixed(3))
 
-let rateAlcohol = calculAlcohol(DO,FD)
+let rateAlcohol = calculAlcohol(DO, FD)
 console.log(rateAlcohol.toFixed(1))
-
-let bitterness = calculBitterness(DO,listHops,200)
-console.log(bitterness)
