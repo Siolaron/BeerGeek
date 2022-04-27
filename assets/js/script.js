@@ -1,8 +1,12 @@
-import { amountSugarProduct, calculDensity, clickOnTab } from './helpers.js';
+import { amountSugarProduct, calculDensity, clickOnTab } from './helpers.js'
 
 /* --------------------------------------------------------------------------------------------
-                                      CREATE RECEIPT
+                                      FUNCTIONS
 -------------------------------------------------------------------------------------------- */
+
+/* ----------------------
+    CREATE RECEIPT
+---------------------- */
 
 /**
  * Check the create receipt form
@@ -91,46 +95,206 @@ function validateCreateReceipt() {
     btn_add_ingredient.addEventListener('click', openModalToAddIngredient)
 }
 
+/* ----------------------
+    ADD INGREDIENT
+---------------------- */
+
 /**
  * Open modal to add an ingredient
  */
 function openModalToAddIngredient() {
     let modal = document.getElementById('modal-ingredients')
-    modal.style.display = 'flex'
+    modal.style.display = 'grid'
 }
+
+/**
+ * Close modal to add an ingredient
+ */
+function closeModalToAddIngredient() {
+    let modal = document.getElementById('modal-ingredients')
+    modal.style.display = 'none'
+}
+
+/**
+ * Select an ingredient to choose the form's inputs
+ */
+function selectIngredientInModal(e) {
+    // Variables
+    let selected_ingredient = e.target
+    let max_quantity = selected_ingredient.dataset.quantity
+    let suffix_value = selected_ingredient.dataset.suffix
+    let selected_name = selected_ingredient.dataset.name
+    let selected_type = selected_ingredient.dataset.type
+    let input_quantity = document.getElementById('add_quantity')
+    let input_time = document.getElementById('add_time')
+    let input_ingredient_name = document.getElementById('add_ingredient_name')
+    let input_ingredient_type = document.getElementById('add_ingredient_type')
+    let suffix_container = document.getElementById('add_quantity_suffix')
+
+    // Remove the previous ingredient selected if there is any
+    let previous_ingredient = document.querySelector('.tab-ingredients__list-item.selected')
+    if (previous_ingredient != null)
+        previous_ingredient.classList.remove('selected')
+
+    // Toggle the class 'selected' for the target
+    selected_ingredient.classList.toggle('selected')
+
+    // Clear inputs
+    input_quantity.value = ''
+    input_time.value = ''
+    input_ingredient_name.value = ''
+    input_ingredient_type.value = ''
+
+    // Set the correct suffix
+    suffix_container.innerText = suffix_value
+
+    // Set the max quantity
+    input_quantity.setAttribute('max', max_quantity)
+
+    // Set the correct hidden input
+    input_ingredient_name.value = selected_name
+    input_ingredient_type.value = selected_type
+}
+
+/**
+ * Check all the parameters before adding new ingredient
+ */
+function checkAddIngredient(e) {
+    e.preventDefault()
+    let form_addingredient = e.target
+    let validate_name, validate_quantity, validate_step, validate_time
+    let new_ingredient = []
+    // Get the values
+    let ingredient_name = form_addingredient.querySelector('#add_ingredient_name')
+    let ingredient_type = form_addingredient.querySelector('#add_ingredient_type')
+    let ingredient_quantity = form_addingredient.querySelector('#add_quantity')
+    let ingredient_step = form_addingredient.querySelector('#add_step')
+    let ingredient_time = form_addingredient.querySelector('#add_time')
+
+    // Check name
+    if (ingredient_name.value == '' || ingredient_name.value == null || ingredient_name.value == 'undefined') {
+        setErrorAddIngredient('Aucun ingrédient n\'a été séléectionné')
+        validate_name = false
+    } else {
+        validate_name = true
+        new_ingredient['name'] = ingredient_name.value
+    }
+
+    // Check type
+    if (ingredient_type.value == '' || ingredient_type.value == null || ingredient_type.value == 'undefined') {
+        setErrorAddIngredient('Aucun ingrédient n\'a été séléectionné')
+        validate_name = false
+    } else {
+        validate_name = true
+        new_ingredient['type'] = ingredient_type.value
+    }
+
+    // Check quantity
+    if (ingredient_quantity.value == '' || ingredient_quantity.value == null || ingredient_quantity.value == 'undefined') {
+        setErrorAddIngredient('La quantité choisie n\'est pas valide')
+        validate_quantity = false
+    } else {
+        validate_quantity = true
+        new_ingredient['quantity'] = ingredient_quantity.value
+    }
+
+    // Check step
+    if (ingredient_step.value == '' || ingredient_step.value == null || ingredient_step.value == 'undefined') {
+        setErrorAddIngredient('Aucune étape n\'a été sélectionnée')
+        ingredient_step = false
+    } else {
+        validate_step = true
+        new_ingredient['step'] = ingredient_step.value
+    }
+
+    // Check time
+    if (ingredient_time.value == '' || ingredient_time.value == null || ingredient_time.value == 'undefined') {
+        setErrorAddIngredient('Le temps choisi n\'est pas valide')
+        validate_time = false
+    } else {
+        validate_time = true
+        new_ingredient['time'] = ingredient_time.value
+    }
+
+    if (validate_name && validate_quantity && validate_step && validate_time)
+        validateAddIngredient(new_ingredient)
+}
+
+function setErrorAddIngredient(message) {
+    console.log(message);
+}
+
+function validateAddIngredient(new_ingredient) {
+    let tab_receipt = document.getElementById("tab_receipt")
+
+    // Create template and clone it
+    let template = document.getElementById("template_ingredient_line")
+    let clone = document.importNode(template.content, true);
+
+    // Lines container
+    let name_case = clone.querySelector('.tabreceipt__item.name')
+    let type_case = clone.querySelector('.tabreceipt__item.type')
+    let quantity_case = clone.querySelector('.tabreceipt__item.quantity')
+    let step_case = clone.querySelector('.tabreceipt__item.step')
+    let time_case = clone.querySelector('.tabreceipt__item.time')
+
+    // Fill the cases
+    name_case.innerText = new_ingredient.name
+    type_case.innerText = new_ingredient.type
+    quantity_case.innerText = new_ingredient.quantity
+    step_case.innerText = new_ingredient.step
+    time_case.innerText = new_ingredient.time
+
+    // Set the new line on our tab
+    tab_receipt.appendChild(clone)
+
+    // Close the modal
+    closeModalToAddIngredient()
+}
+
+
+
+/* --------------------------------------------------------------------------------------------
+                                    CALLS TO FUNCTION
+-------------------------------------------------------------------------------------------- */
 
 window.addEventListener("load", function () {
 
-    /* TABS */
+    /* ----------------------
+              TABS
+    ---------------------- */
     // Retrieve the tabs that correspond to the different types of ingredients
-    let tabs = document.querySelectorAll(".tabs-ingredients__list > li");
+    let tabs = document.querySelectorAll(".tabs-ingredients__list > li")
+    if (tabs != null)
+        //For each tab, add a listener to the click
+        for (let i = 0; i < tabs.length; i++) {
+            tabs[i].addEventListener("click", clickOnTab)
+        }
 
-    //For each tab, add a listener to the click
-    for (let i = 0; i < tabs.length; i++) {
-        tabs[i].addEventListener("click", clickOnTab);
-    }
-
-    /* CREATE RECEIPT */
+    /* ----------------------
+          CREATE RECEIPT
+    ---------------------- */
     let form_createreceipt = document.getElementById('form__createreceipt')
     if (form_createreceipt != null)
         form_createreceipt.addEventListener('submit', checkCreateReceipt)
 
-});
+    /* ----------------------
+          ADD INGREDIENT
+    ---------------------- */
+    /* Close modal */
+    let modal_cross = document.getElementById('modal-cross')
+    if (modal_cross != null)
+        modal_cross.addEventListener('click', closeModalToAddIngredient)
 
-/* EXEMPLE calculDensity */
+    /* Select Ingredient */
+    let ingredients = document.querySelectorAll('.tab-ingredients__list-item')
+    if (ingredients != null)
+        ingredients.forEach(ingredient => {
+            ingredient.addEventListener('click', selectIngredientInModal)
+        })
 
-/*
-let listGrain = {
-    acidMalt : {
-        "mass" : 12,
-        "potential" : 58.7
-    },
-    amberMalt : {
-        "mass" : 2,
-        "potential" : 75
-    },
-}
-
-let test = calculDensity(listGrain,200,80)
-
-console.log(test)*/
+    /* Check form */
+    let form_addingredient = document.getElementById('form__add-ingredient')
+    if (form_addingredient != null)
+        form_addingredient.addEventListener('submit', checkAddIngredient)
+})
