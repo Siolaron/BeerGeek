@@ -1,4 +1,13 @@
-import { amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol } from './helpers.js';
+import {
+    amountSugarProduct,
+    calculDensity,
+    clickOnTab,
+    finalDensity,
+    calculAlcohol,
+    calculBitterness,
+    calculColorEBC,
+    giveEBCtoRGB
+} from './helpers.js';
 
 /* --------------------------------------------------------------------------------------------
                                       FUNCTIONS
@@ -304,16 +313,27 @@ window.addEventListener("load", function () {
 let listGrain = {
     acidMalt: {
         "mass": 12,
-        "potential": 58.7
+        "potential": 58.7,
+        "ebc":5.9
     },
     amberMalt: {
         "mass": 12,
-        "potential": 75
+        "potential": 75,
+        "ebc":43.3
     },
 }
 
 let abbayeBelgian = {
     attenuation: 72
+}
+
+/* exemple houblon*/
+let listHops = {
+    admiral : {
+        "mass" : 120,
+        "alpha" : 14.75,
+        "duration":30
+    },
 }
 
 let DO = calculDensity(listGrain, 200, 80)
@@ -324,3 +344,12 @@ console.log(FD.toFixed(3))
 
 let rateAlcohol = calculAlcohol(DO, FD)
 console.log(rateAlcohol.toFixed(1))
+
+let bitterness = calculBitterness(DO,listHops,200)
+console.log(bitterness)
+
+let colorEBC = calculColorEBC(listGrain,200)
+console.log(colorEBC.toFixed(0))
+
+console.log(giveEBCtoRGB(colorEBC.toFixed(0)))
+
