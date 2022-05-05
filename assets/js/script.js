@@ -20,19 +20,19 @@ import {
 /**
  * Check the create receipt form
  */
-function checkCreateReceipt(e) {
+function checkInitReceipt(e) {
     e.preventDefault()
-    let form_createreceipt = e.target
+    let form_initreceipt = e.target
     let validate_name, validate_volume, validate_boiling, validate_estimated_efficiency
     // Get the values
-    let receipt_name = form_createreceipt.querySelector('#receipt_name')
-    let receipt_volume = form_createreceipt.querySelector('#receipt_volume')
-    let receipt_boiling = form_createreceipt.querySelector('#receipt_boiling')
-    let receipt_estimated_efficiency = form_createreceipt.querySelector('#receipt_estimated_efficiency')
+    let receipt_name = form_initreceipt.querySelector('#receipt_name')
+    let receipt_volume = form_initreceipt.querySelector('#receipt_volume')
+    let receipt_boiling = form_initreceipt.querySelector('#receipt_boiling')
+    let receipt_estimated_efficiency = form_initreceipt.querySelector('#receipt_estimated_efficiency')
 
     // Check name
     if (receipt_name.value == '' || receipt_name.value == null || receipt_name.value == 'undefined') {
-        setErrorCreateReceipt(receipt_name, 'Ce champ est incorrect')
+        setErrorInitReceipt(receipt_name, 'Ce champ est incorrect')
         validate_name = false
     } else {
         validate_name = true
@@ -40,7 +40,7 @@ function checkCreateReceipt(e) {
 
     // Check volume
     if (receipt_volume.value == '' || receipt_volume.value == null || receipt_volume.value == 'undefined') {
-        setErrorCreateReceipt(receipt_volume, 'Ce champ est incorrect')
+        setErrorInitReceipt(receipt_volume, 'Ce champ est incorrect')
         validate_volume = false
     } else {
         validate_volume = true
@@ -48,7 +48,7 @@ function checkCreateReceipt(e) {
 
     // Check boiling
     if (receipt_boiling.value == '' || receipt_boiling.value == null || receipt_boiling.value == 'undefined') {
-        setErrorCreateReceipt(receipt_boiling, 'Ce champ est incorrect')
+        setErrorInitReceipt(receipt_boiling, 'Ce champ est incorrect')
         validate_boiling = false
     } else {
         validate_boiling = true
@@ -56,21 +56,21 @@ function checkCreateReceipt(e) {
 
     // Check estimated efficiency
     if (receipt_estimated_efficiency.value == '' || receipt_estimated_efficiency.value == null || receipt_estimated_efficiency.value == 'undefined') {
-        setErrorCreateReceipt(receipt_estimated_efficiency, 'Ce champ est incorrect')
+        setErrorInitReceipt(receipt_estimated_efficiency, 'Ce champ est incorrect')
         validate_estimated_efficiency = false
     } else {
         validate_estimated_efficiency = true
     }
 
     if (validate_name && validate_volume && validate_boiling && validate_estimated_efficiency)
-        validateCreateReceipt()
+        validateInitReceipt()
 
 }
 
 /**
  * Create error message
  */
-function setErrorCreateReceipt(input, message) {
+function setErrorInitReceipt(input, message) {
     // Disabled add ingredient button
     document.getElementById('add_ingredient').classList.add('disabled')
 
@@ -79,7 +79,7 @@ function setErrorCreateReceipt(input, message) {
 
     // Create error node
     let errorMessage = document.createElement('p')
-    errorMessage.classList.add('createreceipt__error')
+    errorMessage.classList.add('initreceipt__error')
     errorMessage.innerHTML = message
 
     input.parentNode.append(errorMessage)
@@ -96,7 +96,7 @@ function setErrorCreateReceipt(input, message) {
 /**
  * Called to unable add ingredient button
  */
-function validateCreateReceipt() {
+function validateInitReceipt() {
     // Enable add ingredient button
     document.getElementById('add_ingredient').classList.remove('disabled')
     // Add event listener
@@ -177,6 +177,7 @@ function checkAddIngredient(e) {
     let ingredient_name = form_addingredient.querySelector('#add_ingredient_name')
     let ingredient_type = form_addingredient.querySelector('#add_ingredient_type')
     let ingredient_quantity = form_addingredient.querySelector('#add_quantity')
+    let ingredient_quantity_suffix = document.getElementById('add_quantity_suffix').innerText
     let ingredient_step = form_addingredient.querySelector('#add_step')
     let ingredient_time = form_addingredient.querySelector('#add_time')
 
@@ -205,6 +206,7 @@ function checkAddIngredient(e) {
     } else {
         validate_quantity = true
         new_ingredient['quantity'] = ingredient_quantity.value
+        new_ingredient['quantity_suffix'] = ingredient_quantity_suffix
     }
 
     // Check step
@@ -241,16 +243,18 @@ function validateAddIngredient(new_ingredient) {
     let clone = document.importNode(template.content, true);
 
     // Lines container
-    let name_case = clone.querySelector('.tabreceipt__item.name')
-    let type_case = clone.querySelector('.tabreceipt__item.type')
-    let quantity_case = clone.querySelector('.tabreceipt__item.quantity')
-    let step_case = clone.querySelector('.tabreceipt__item.step')
-    let time_case = clone.querySelector('.tabreceipt__item.time')
+    let name_case = clone.querySelector('.tabreceipt__item.name .tabreceipt__content')
+    let type_case = clone.querySelector('.tabreceipt__item.type .tabreceipt__content')
+    let quantity_case_content = clone.querySelector('.tabreceipt__item.quantity .tabreceipt__content')
+    let quantity_case_suffix = clone.querySelector('.tabreceipt__item.quantity .tabreceipt__suffix')
+    let step_case = clone.querySelector('.tabreceipt__item.step .tabreceipt__content')
+    let time_case = clone.querySelector('.tabreceipt__item.time .tabreceipt__content')
 
     // Fill the cases
     name_case.innerText = new_ingredient.name
     type_case.innerText = new_ingredient.type
-    quantity_case.innerText = new_ingredient.quantity
+    quantity_case_content.innerText = new_ingredient.quantity
+    quantity_case_suffix.innerText = new_ingredient.quantity_suffix
     step_case.innerText = new_ingredient.step
     time_case.innerText = new_ingredient.time
 
@@ -283,9 +287,9 @@ window.addEventListener("load", function () {
     /* ----------------------
           CREATE RECEIPT
     ---------------------- */
-    let form_createreceipt = document.getElementById('form__createreceipt')
-    if (form_createreceipt != null)
-        form_createreceipt.addEventListener('submit', checkCreateReceipt)
+    let form_initreceipt = document.getElementById('form__initreceipt')
+    if (form_initreceipt != null)
+        form_initreceipt.addEventListener('submit', checkInitReceipt)
 
     /* ----------------------
           ADD INGREDIENT
