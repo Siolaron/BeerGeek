@@ -2,58 +2,107 @@
 
 <main>
     <h1>Créer une recette</h1>
-    <form method="post" class="createreceipt" id="form__createreceipt">
-        <div class="createreceipt__group">
-            <label for="receipt_name" class="createreceipt__label">Nom</label>
-            <input type="text" name="receipt_name" id="receipt_name" class="createreceipt__input">
+    <form method="post" class="initreceipt" id="form__initreceipt">
+        <div class="initreceipt__group">
+            <label for="receipt_name" class="initreceipt__label">Nom</label>
+            <input type="text" name="receipt_name" id="receipt_name" class="initreceipt__input">
         </div>
-        <div class="createreceipt__group">
-            <label for="receipt_volume" class="createreceipt__label">Volume</label>
-            <input type="number" name="receipt_volume" id="receipt_volume" min="1" class="createreceipt__input">
-            <p class="createreceipt__suffix">litres</p>
+        <div class="initreceipt__group">
+            <label for="receipt_volume" class="initreceipt__label">Volume</label>
+            <input type="number" name="receipt_volume" id="receipt_volume" min="1" class="initreceipt__input">
+            <p class="initreceipt__suffix">litres</p>
         </div>
-        <div class="createreceipt__group">
-            <label for="receipt_boiling" class="createreceipt__label">Durée ébulition</label>
-            <input type="number" name="receipt_boiling" id="receipt_boiling" min="1" class="createreceipt__input">
-            <p class="createreceipt__suffix">minutes</p>
+        <div class="initreceipt__group">
+            <label for="receipt_boiling" class="initreceipt__label">Durée ébulition</label>
+            <input type="number" name="receipt_boiling" id="receipt_boiling" min="1" class="initreceipt__input">
+            <p class="initreceipt__suffix">minutes</p>
         </div>
-        <div class="createreceipt__group">
-            <label for="receipt_estimated_efficiency" class="createreceipt__label">Efficacité estimée</label>
-            <input type="number" name="receipt_estimated_efficiency" id="receipt_estimated_efficiency" min="1" max="100" class="createreceipt__input">
-            <p class="createreceipt__suffix">%</p>
+        <div class="initreceipt__group">
+            <label for="receipt_estimated_efficiency" class="initreceipt__label">Efficacité estimée</label>
+            <input type="number" name="receipt_estimated_efficiency" id="receipt_estimated_efficiency" min="1" max="100" class="initreceipt__input">
+            <p class="initreceipt__suffix">%</p>
         </div>
         <input type="submit" value="Créer ma recette" class="cta">
     </form>
     <button class="cta disabled" id="add_ingredient">Ajouter un ingrédient</button>
-    <ul class="tabreceipt" id="tab_receipt">
-        <li class="tabreceipt__line main">
-            <div class="tabreceipt__item">
-                <h3>Nom</h3>
-            </div>
-            <div class="tabreceipt__item">
-                <h3>Type</h3>
-            </div>
-            <div class="tabreceipt__item">
-                <h3>Quantité</h3>
-            </div>
-            <div class="tabreceipt__item">
-                <h3>Etape</h3>
-            </div>
-            <div class="tabreceipt__item">
-                <h3>Temps</h3>
-            </div>
-        </li>
-        <template id="template_ingredient_line">
-            <li class="tabreceipt__line">
-                <div class="tabreceipt__item name"></div>
-                <div class="tabreceipt__item type"></div>
-                <div class="tabreceipt__item quantity"></div>
-                <div class="tabreceipt__item step"></div>
-                <div class="tabreceipt__item time"></div>
+    <div class="l-receipttabs">
+        <ul class="tabreceipt" id="tab_receipt">
+            <li class="tabreceipt__line main">
+                <div class="tabreceipt__item">
+                    <h3>Nom</h3>
+                </div>
+                <div class="tabreceipt__item">
+                    <h3>Type</h3>
+                </div>
+                <div class="tabreceipt__item">
+                    <h3>Quantité</h3>
+                </div>
+                <div class="tabreceipt__item">
+                    <h3>Etape</h3>
+                </div>
+                <div class="tabreceipt__item">
+                    <h3>Temps</h3>
+                </div>
             </li>
-        </template>
-    </ul>
-
+            <template id="template_ingredient_line">
+                <li class="tabreceipt__line">
+                    <div class="tabreceipt__item name">
+                        <p class="tabreceipt__content"></p>
+                    </div>
+                    <div class="tabreceipt__item type">
+                        <p class="tabreceipt__content"></p>
+                    </div>
+                    <div class="tabreceipt__item quantity">
+                        <p class="tabreceipt__content"></p>
+                        <p class="tabreceipt__suffix"></p>
+                    </div>
+                    <div class="tabreceipt__item step">
+                        <p class="tabreceipt__content"></p>
+                    </div>
+                    <div class="tabreceipt__item time">
+                        <p class="tabreceipt__content"></p>
+                        <p class="tabreceipt__suffix">minutes</p>
+                    </div>
+                </li>
+            </template>
+        </ul>
+        <ul class="tabcarac">
+            <li class="tabcarac__item">
+                <p class="tabcarac__title">Total Malts :</p>
+                <p class="tabcarac__value">0
+                    <span class="tabcarac__suffix">kgs</span>
+                </p>
+            </li>
+            <li class="tabcarac__item">
+                <p class="tabcarac__title">Total Houblons :</p>
+                <p class="tabcarac__value">0
+                    <span class="tabcarac__suffix">grs</span>
+                </p>
+            </li>
+            <li class="tabcarac__item">
+                <p class="tabcarac__title">Densité originelle (OG):</p>
+                <p class="tabcarac__value">0</p>
+            </li>
+            <li class="tabcarac__item">
+                <p class="tabcarac__title">Densité finale (FG):</p>
+                <p class="tabcarac__value">0</p>
+            </li>
+            <li class="tabcarac__item">
+                <p class="tabcarac__title">Amertume (IBU):</p>
+                <p class="tabcarac__value">0</p>
+            </li>
+            <li class="tabcarac__item">
+                <p class="tabcarac__title">Couleur (EBC):</p>
+                <p class="tabcarac__value">0</p>
+            </li>
+            <li class="tabcarac__item">
+                <p class="tabcarac__title">Alcool (ABV)</p>
+                <p class="tabcarac__value">0
+                    <span class="tabcarac__suffix">%</span>
+                </p>
+            </li>
+        </ul>
+    </div>
     <div class="modal-ingredients" id="modal-ingredients">
         <div class="modal-ingredients__cross" id="modal-cross"></div>
         <div class="modal-ingredients__leftcontent">
