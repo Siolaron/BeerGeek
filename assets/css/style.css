@@ -104,14 +104,14 @@ main {
 }
 
 /* ------------------------
-      CREATE RECEIPT
+      RECEIPT TABS
 ------------------------ */
 
-.createreceipt {
-    display: flex;
-    column-gap: 3rem;
+.l-receipttabs {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    column-gap: 45px;
 }
-
 
 
 /* --------------------------------------------------------------------------------------------
@@ -171,15 +171,25 @@ main {
     border: solid 1px var(--c-black);
 }
 
-/* ------------------------
-       CREATE RECEIPT
------------------------- */
-
-.createreceipt {
-    margin: 1rem 0;
+.tabreceipt__item p {
+    display: inline;
 }
 
-.createreceipt__group {
+.tabreceipt__content {
+    text-transform: capitalize;
+}
+
+/* ------------------------
+       INIT RECEIPT
+------------------------ */
+
+.initreceipt {
+    margin: 1rem 0;
+    display: flex;
+    column-gap: 3rem;
+}
+
+.initreceipt__group {
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-template-rows: repeat(2, auto);
@@ -190,25 +200,25 @@ main {
     position: relative;
 }
 
-.createreceipt__label {
+.initreceipt__label {
     grid-area: label;
     font-weight: var(--fw-semi_bold);
 }
 
-.createreceipt__input {
+.initreceipt__input {
     padding-inline: .25rem;
     grid-area: input;
 }
 
-.createreceipt__input.error {
+.initreceipt__input.error {
     border-color: var(--c-error);
 }
 
-.createreceipt__suffix {
+.initreceipt__suffix {
     grid-area: suffix;
 }
 
-.createreceipt__error {
+.initreceipt__error {
     grid-area: error;
 }
 
@@ -322,6 +332,31 @@ main {
 
 .form__add-ingredient input[type="submit"] {
     margin-top: 1rem;
+}
+
+/* ------------------------
+        TAB CARAC
+------------------------ */
+
+.tabcarac {
+    padding-right: 25px;
+}
+
+.tabcarac__item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tabcarac__item+.tabcarac__item {
+    margin-top: 10px;
+}
+
+.tabcarac__value {
+    min-width: 7ch;
+    padding: 2px 8px;
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: space-between;
 }
 
 /* --------------------------------------------------------------------------------------------
