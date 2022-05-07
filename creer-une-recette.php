@@ -69,35 +69,46 @@
         <ul class="tabcarac">
             <li class="tabcarac__item">
                 <p class="tabcarac__title">Total Malts :</p>
-                <p class="tabcarac__value">0
+                <p class="tabcarac__value">
+                    <span class="tabcarac__content"  id="mass-malt">0</span>
                     <span class="tabcarac__suffix">kgs</span>
                 </p>
             </li>
             <li class="tabcarac__item">
                 <p class="tabcarac__title">Total Houblons :</p>
-                <p class="tabcarac__value">0
+                <p class="tabcarac__value">
+                    <span class="tabcarac__content" id="mass-hops">0</span>
                     <span class="tabcarac__suffix">grs</span>
                 </p>
             </li>
             <li class="tabcarac__item">
                 <p class="tabcarac__title">Densité originelle (OG):</p>
-                <p class="tabcarac__value">0</p>
+                <p class="tabcarac__value">
+                    <span class="tabcarac__content" id="originel-density">0</span>
+                </p>
             </li>
             <li class="tabcarac__item">
                 <p class="tabcarac__title">Densité finale (FG):</p>
-                <p class="tabcarac__value">0</p>
+                <p class="tabcarac__value">
+                    <span class="tabcarac__content" id="final-density">0</span>
+                </p>
             </li>
             <li class="tabcarac__item">
                 <p class="tabcarac__title">Amertume (IBU):</p>
-                <p class="tabcarac__value">0</p>
+                <p class="tabcarac__value">
+                    <span class="tabcarac__content" id="bitterness">0</span>
+                </p>
             </li>
             <li class="tabcarac__item">
                 <p class="tabcarac__title">Couleur (EBC):</p>
-                <p class="tabcarac__value">0</p>
+                <p class="tabcarac__value">
+                    <span class="tabcarac__content" id="color">0</span>
+                </p>
             </li>
             <li class="tabcarac__item">
                 <p class="tabcarac__title">Alcool (ABV)</p>
-                <p class="tabcarac__value">0
+                <p class="tabcarac__value">
+                    <span class="tabcarac__content" id="rate-alcohol">0</span>
                     <span class="tabcarac__suffix">%</span>
                 </p>
             </li>
@@ -123,8 +134,10 @@
                                 $subject =  $malt['INVENTORY'];
                                 $pattern = '/[^0-9]/';
                                 $quantity = str_replace(' kg', '', $malt['INVENTORY']);
+                                $potential = $malt['YIELD'];
+                                $ebc = str_replace(' EBC','',$malt['DISPLAY_COLOR']);
                             ?>
-                                <li class="tab-ingredients__list-item" data-name="<?= $malt['NAME'] ?>" data-type="malt" data-quantity="<?= $quantity ?>" data-suffix="kgs"><?= $malt['NAME'] . ' (' . $quantity . ' kgs)' ?></li>
+                                <li class="tab-ingredients__list-item" data-name="<?= $malt['NAME'] ?>" data-type="malt" data-quantity="<?= $quantity ?>" data-suffix="kgs" data-potential="<?= $potential ?>" data-ebc="<?= $ebc ?>"><?= $malt['NAME'] . ' (' . $quantity . ' kgs)' ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
@@ -137,8 +150,9 @@
                                 $subject =  $hop['INVENTORY'];
                                 $pattern = '/[^0-9]/';
                                 $quantity = str_replace(' g', '', $hop['INVENTORY']);
+                                $alpha =  $hop['ALPHA'];
                             ?>
-                                <li class="tab-ingredients__list-item" data-name="<?= $hop['NAME'] ?>" data-type="houblon" data-quantity="<?= $quantity ?>" data-suffix="grs"><?= $hop['NAME'] . ' (' . $quantity . ' grs)' ?></li>
+                                <li class="tab-ingredients__list-item" data-name="<?= $hop['NAME'] ?>" data-type="houblon" data-quantity="<?= $quantity ?>" data-suffix="grs" data-alpha="<?= $alpha ?>"><?= $hop['NAME'] . ' (' . $quantity . ' grs)' ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
@@ -151,8 +165,9 @@
                                 $subject =  $yeast['INVENTORY'];
                                 $pattern = '/[^0-9]/';
                                 $quantity = str_replace(' pkg', '', $yeast['INVENTORY']);
+                                $attenuation = $yeast['ATTENUATION'];
                             ?>
-                                <li class="tab-ingredients__list-item" data-name="<?= $yeast['NAME'] ?>" data-type="levure" data-quantity="<?= $quantity ?>" data-suffix="ml"><?= $yeast['NAME'] . ' (' . $quantity . ' ml)' ?></li>
+                                <li class="tab-ingredients__list-item" data-name="<?= $yeast['NAME'] ?>" data-type="levure" data-quantity="<?= $quantity ?>" data-suffix="ml" data-attenuation="<?= $attenuation ?>"><?= $yeast['NAME'] . ' (' . $quantity . ' ml)' ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
@@ -162,6 +177,10 @@
         <form action="" method="post" id="form__add-ingredient" class="form__add-ingredient">
             <input type="hidden" name="add_ingredient_name" id="add_ingredient_name">
             <input type="hidden" name="add_ingredient_type" id="add_ingredient_type">
+            <input type="hidden" name="add_ingredient_potential" id="add_ingredient_potential">
+            <input type="hidden" name="add_ingredient_ebc" id="add_ingredient_ebc">
+            <input type="hidden" name="add_ingredient_alpha" id="add_ingredient_alpha">
+            <input type="hidden" name="add_ingredient_attenuation" id="add_ingredient_attenuation">
             <div class="form__add-ingredient__group">
                 <label for="add_quantity" class="form__add-ingredient__label">Quantité</label>
                 <div class="form__add-ingredient__inputgroup">
