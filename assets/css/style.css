@@ -2,15 +2,34 @@
                                         GENERAL
 -------------------------------------------------------------------------------------------- */
 
+@font-face {
+    font-family: 'Nexa Rust Slab';
+    src: url('./fonts/NexaRustSlab.woff2') format('woff2'),
+        url('./fonts/NexaRustSlab.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bookman Old Style';
+    src: url('./fonts/BookmanOldStyle.woff2') format('woff2'),
+        url('./fonts/BookmanOldStyle.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
 :root {
     /* Colors */
-    --c-secondary: #FD8008;
-    --c-primary: #0F80FF;
-    --c-error: #ea1c1c;
-    --c-light-grey: #d0d0d0;
-    --c-dark-grey: #575757;
-    --c-black: #000000;
-    --c-white: #FFFFFF;
+    --c-primary: #FBA200;
+    --c-secondary: #3F2700;
+    --c-error: #dd3f0e;
+    --c-grey: #525150;
+    --c-dark: #1C1201;
+    --c-light: #FDF5E8;
 
     /* Font family */
     /* --ff-name */
@@ -21,6 +40,11 @@
     --fs-m: 1em;
     --fs-l: calc(var(--fs-m)* var(--fs-ratio));
     --fs-xl: calc(var(--fs-l)* var(--fs-ratio));
+    --fs-xxl: calc(var(--fs-xl)* var(--fs-ratio));
+
+    /* Font Family */
+    --ff-nuxt: 'Nexa Rust Slab';
+    --ff-montserrat: 'Montserrat', sans-serif;
 
     /* Font weight */
     --fw-regular: 400;
@@ -34,10 +58,11 @@
 }
 
 html {
-    font-family: sans-serif;
+    font-family: var(--ff-montserrat);
     font-size: var(--fs-m);
     line-height: 1.45;
     font-weight: var(--fw-regular);
+    background-color: var(--c-light);
 }
 
 body {
@@ -51,6 +76,7 @@ img, picture, video, canvas, svg {
 
 :is(a, a:hover, button) {
     text-decoration: none;
+    color: var(--c-dark);
 }
 
 li {
@@ -59,22 +85,6 @@ li {
 
 h1, h2, h3, h4, h5, h6, p, blockquote {
     max-width: 80ch;
-}
-
-h1 {
-    font-size: var(--fs-xl);
-}
-
-h2 {
-    font-size: var(--fs-l);
-}
-
-h3 {
-    font-size: var(--fs-m);
-}
-
-h4 {
-    font-size: var(--fs-s);
 }
 
 /* --------------------------------------------------------------------------------------------
@@ -92,11 +102,7 @@ body {
     grid-template-areas:
         'navbar'
         'content';
-    row-gap: 1rem;
-}
-
-.mainnavbar {
-    grid-area: navbar;
+    background: url('../img/vintage-texture.jpg') repeat center / 100% auto;
 }
 
 main {
@@ -104,8 +110,20 @@ main {
 }
 
 /* ------------------------
+       MAIN NAV BAR
+------------------------ */
+
+.mainnavbar {
+    grid-area: navbar;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+}
+
+/* ------------------------
       RECEIPT TABS
 ------------------------ */
+
 
 .l-receipttabs {
     display: grid;
@@ -117,6 +135,71 @@ main {
 /* --------------------------------------------------------------------------------------------
                                       COMPONENT
 -------------------------------------------------------------------------------------------- */
+
+/* ------------------------
+      HOME CONTAINER
+------------------------ */
+
+.home__container {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow-y: hidden;
+}
+
+.home__title {
+    font-size: calc(var(--fs-xxl) * 3.5);
+    line-height: 1;
+}
+
+.home__title:first-of-type {
+    width: 5ch;
+    align-self: center;
+    justify-self: flex-end;
+}
+
+.home__title:last-of-type {
+    margin-bottom: 40px;
+    align-self: flex-end;
+}
+
+.home__beer {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    align-self: center;
+    justify-self: center;
+}
+
+
+/* ------------------------
+       MAIN NAV BAR
+------------------------ */
+
+.mainnavbar {
+    border-bottom: 1px solid var(--c-grey);
+}
+
+.mainnavbar__title {
+    margin-right: 25px;
+    justify-self: flex-end;
+}
+
+.mainnavbar__content--center {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid var(--c-grey);
+    border-right: 1px solid var(--c-grey);
+}
+
+.mainnavbar__list {
+    margin-inline: auto;
+    display: flex;
+    column-gap: calc(10px + 2.5vw);
+}
 
 /* ------------------------
            TABS
@@ -163,7 +246,7 @@ main {
 }
 
 .tabreceipt__line.main {
-    background-color: var(--c-light-grey);
+    background-color: var(--c-grey);
 }
 
 .tabreceipt__item {
@@ -256,7 +339,7 @@ main {
     top: 10px;
     right: 10px;
     border-radius: 50%;
-    background-color: var(--c-light-grey);
+    background-color: var(--c-grey);
     cursor: pointer;
 }
 
@@ -294,7 +377,7 @@ main {
 }
 
 .tab-ingredients__list-item:is(:hover, .selected) {
-    background-color: var(--c-light-grey);
+    background-color: var(--c-grey);
 }
 
 /* Form */
@@ -314,7 +397,7 @@ main {
 
 .form__add-ingredient__label {
     margin-bottom: .25rem;
-    color: var(--c-dark-grey);
+    color: var(--c-black);
     font-size: var(--fs-s);
 }
 
@@ -360,12 +443,47 @@ main {
 }
 
 /* --------------------------------------------------------------------------------------------
-                                        UTILITIE
+                                        UTILITIES
 -------------------------------------------------------------------------------------------- */
 
 /* ------------------------
-          CTA
+          FONTS
 ------------------------ */
+/* Font family */
+
+.ff--nuxt {
+    font-family: var(--ff-nuxt);
+}
+
+/* Font weight */
+
+.fw--semibold {
+    font-weight: var(--fw-semi_bold);
+}
+
+/* Font size */
+
+.fs--s {
+    font-size: var(--fs-s);
+}
+
+.fs--m {
+    font-size: var(--fs-m);
+}
+
+.fs--l {
+    font-size: var(--fs-l);
+}
+
+.fs--xl {
+    font-size: var(--fs-xl);
+}
+
+/* ------------------------
+    CLICKABLE ELEMENTS
+------------------------ */
+
+/* CTA Classic */
 
 .cta {
     padding: .5rem 1rem;
@@ -382,9 +500,30 @@ main {
 }
 
 .cta.disabled {
-    border-color: var(--c-dark-grey);
-    background-color: var(--c-light-grey);
-    color: var(--c-dark-grey);
+    border-color: var(--c-black);
+    background-color: var(--c-grey);
+    color: var(--c-black);
     opacity: .75;
     pointer-events: none;
+}
+
+/* Hover underlined */
+
+.underlined {
+    position: relative;
+}
+
+.underlined::after {
+    content: '';
+    width: 0;
+    height: 1px;
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--c-dark);
+    transition: width .35s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.underlined:hover::after {
+    width: 100%;
 }
