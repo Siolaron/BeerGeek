@@ -3,7 +3,7 @@ $is_home = false;
 require_once('./inc/head.php') ?>
 
 <main>
-    <h1>Créer une recette</h1>
+    <h1>La fabrique à bière</h1>
     <form method="post" class="initreceipt" id="form__initreceipt">
         <div class="initreceipt__group">
             <label for="receipt_name" class="initreceipt__label">Nom</label>
