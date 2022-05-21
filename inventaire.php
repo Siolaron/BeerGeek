@@ -12,96 +12,60 @@
 			<div id="malts" class="tab-ingredients__pane active"> 
 				<ul class="tabreceipt">
 					<li class="tabreceipt__line main">
-						<div class="tabreceipt__item">
+						<div class="tabreceipt__item alpha" data-info="NAME">
 							<h3>Nom du malts</h3>
 						</div>
-						<div class="tabreceipt__item">
+						<div class="tabreceipt__item alpha" data-info="TYPE">
 							<h3>Type</h3>
 						</div>
-						<div class="tabreceipt__item">
+						<div class="tabreceipt__item alpha" data-info="ORIGIN">
 							<h3>Origine</h3>
 						</div>
-						<div class="tabreceipt__item">
+						<div class="tabreceipt__item alpha" data-info="QUANTITY">
 							<h3>Quantité</h3>
 						</div>
 					</li>
 					<li class="tabreceipt__line">
-						<div class="tabreceipt__item">
-							<p>Agnus</p>
-						</div>
-						<div class="tabreceipt__item">
-							<p>Czech Republic</p>
-						</div>
-						<div class="tabreceipt__item">
-							<p>Bittering</p>
-						</div>
-						<div class="tabreceipt__item">
-							<p>1,00 oz</p>
-						</div>
 					</li>
 				</ul>
 			</div> 
 			<div id="hops" class="tab-ingredients__pane">
 				<ul class="tabreceipt">
 					<li class="tabreceipt__line main">
-						<div class="tabreceipt__item">
+						<div class="tabreceipt__item alpha" data-info="NAME">
 							<h3>Nom du houblon</h3>
 						</div>
-						<div class="tabreceipt__item">
-							<h3>Origine</h3>
-						</div>
-						<div class="tabreceipt__item">
+						<div class="tabreceipt__item alpha" data-info="TYPE">
 							<h3>Type</h3>
 						</div>
-						<div class="tabreceipt__item">
+						<div class="tabreceipt__item alpha" data-info="ORIGIN">
+							<h3>Origine</h3>
+						</div>
+						<div class="tabreceipt__item alpha" data-info="QUANTITY">
 							<h3>Quantité</h3>
 						</div>
 					</li>
 					<li class="tabreceipt__line">
-						<div class="tabreceipt__item">
-							<p>Agnus</p>
-						</div>
-						<div class="tabreceipt__item">
-							<p>Czech Republic</p>
-						</div>
-						<div class="tabreceipt__item">
-							<p>Bittering</p>
-						</div>
-						<div class="tabreceipt__item">
-							<p>1,00 oz</p>
-						</div>
 					</li>
 				</ul>
 			</div>
 			<div id="yeasts" class="tab-ingredients__pane">
 			<ul class="tabreceipt">
 					<li class="tabreceipt__line main">
-						<div class="tabreceipt__item">
+						<div class="tabreceipt__item alpha" data-info="NAME">
 							<h3>Nom de la levure</h3>
 						</div>
-						<div class="tabreceipt__item">
-							<h3>Nom du laboratoire</h3>
-						</div>
-						<div class="tabreceipt__item">
+						<div class="tabreceipt__item alpha" data-info="TYPE">
 							<h3>Type de levure</h3>
 						</div>
-						<div class="tabreceipt__item">
+						<div class="tabreceipt__item alpha" data-info="LABORATORY">
+							<h3>Nom du laboratoire</h3>
+						</div>
+						<div class="tabreceipt__item alpha" data-info="QUANTITY">
 							<h3>Quantité</h3>
 						</div>
 					</li>
 					<li class="tabreceipt__line">
-						<div class="tabreceipt__item">
-							<p>Agnus</p>
-						</div>
-						<div class="tabreceipt__item">
-							<p>Czech Republic</p>
-						</div>
-						<div class="tabreceipt__item">
-							<p>Bittering</p>
-						</div>
-						<div class="tabreceipt__item">
-							<p>1,00 oz</p>
-						</div>
 					</li>
 				</ul>
 			</div>
