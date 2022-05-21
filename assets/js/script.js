@@ -332,7 +332,7 @@ let listGrain = {}
 let listHops = {}
 let listYeast = {}
 
-function calculSpecifity(new_ingredient){
+function calculSpecifity(new_ingredient) {
     /* Variables */
     let volumeBrew = document.querySelector('#receipt_volume').value
     let efficiency = document.querySelector('#receipt_estimated_efficiency').value
@@ -409,46 +409,103 @@ function calculSpecifity(new_ingredient){
 -------------------------------------------------------------------------------------------- */
 
 /**
- * Fetch data from file
+ *  Fetch data from file
  * 
- * @param {String} ingredientType 
+ * @param {*} ingredientType Type of ingredient, yeasts, hops or malts
+ * @param {*} sortBy By which type of information the table will be sorted
+ * @param {*} orderBy Whether the table will be sorted ascending or descending
  */
- function fetchDataJson(ingredientType) {
-    let typeName = ingredientType[0];
-    let fileIngredientType = ingredientType[1];
+ function fetchDataJson(ingredientType, sortBy = null, orderBy = null) {
 
-     /* READ JSON DATA */
-    fetch(fileIngredientType)
+    /* Get datas from json file */
+    fetch('./assets/datas/' + ingredientType + '.json')
     .then(response => {
         return response.json();
     })
     .then(function(ingredients) {
-        traitmentDataIngredients(ingredients, typeName);
+        traitmentDataIngredients(ingredients, ingredientType, sortBy, orderBy);
     });
+}
+
+/**
+ * Detects by which type of information and in which way the data will be sorted
+ * 
+ */
+function sortData() {
+
+    //Depending on the class, the data will be sorted in an ascending or descending manner
+    let orderBy;
+    orderBy = this.classList.contains('alpha') ?  orderBy = 'alpha' : orderBy = 'alpha-reverse';
+    this.classList.toggle('alpha');
+
+    //Detects the current ingredient and the type of information the user has clicked on
+    let sortBy = this.dataset.info;
+    let typeIngredient = document.querySelector('.tabs-ingredients__item.active').dataset.ingredient;
+
+    //Re fetch the data to sort them
+    fetchDataJson(typeIngredient, sortBy, orderBy);
 }
 
 /**
  * For each ingredient we create an item in the table, we assign it to a line and this line is then added to the corresponding tab
  * 
- * @param {Array} ingredients 
- * @param {String} typeName 
+ * @param {Array} ingredients
+ * @param {String} typeIngredient Type of ingredient : hops, malts or yeasts
+ * @param {String} sortBy Sorting according to ingredient information
+ * @param {String} orderBy Sort alphabetically from A to Z or from Z to A
  */
- function traitmentDataIngredients(ingredients, typeName) {
-
+ function traitmentDataIngredients(ingredients, typeIngredient, sortBy, orderBy) {
     ingredients = ingredients.data;
 
+    let ingredients_array = [];
+
+    //push all ingredients in an array to be able to sort them after
     for (const ingredient of Object.entries(ingredients)) {
-        let parent = document.querySelector('#' + typeName + ' .tabreceipt');
+        ingredients_array.push(ingredient);
+    }  
+    
+    //Sort datas
+    if(sortBy !== null) {
+        ingredients_array = ingredients_array.sort(function(a, b) {
 
-        let divs = createItemsArray(typeName, ingredient);
+            if ( a[1][sortBy] < b[1][sortBy] ){
+                return -1;
+              }
+              if ( a[1][sortBy] > b[1][sortBy] ){
+                return 1;
+              }
+              return 0;
+        });
 
+        //Sorting data descending
+        if(orderBy == 'alpha-reverse') {
+            ingredients_array.reverse();
+        }
+
+        //Remove old lines to make room for new ones
+        let tab_active = document.querySelector('.tab-ingredients__pane.active');
+        let old_rows = tab_active.querySelectorAll(".tabreceipt__line:not(.main)");
+
+        old_rows.forEach(function(old_row) {
+            old_row.remove();
+        });
+    }
+
+    //Creating semantics for the data and assigning them to the corresponding tab
+    ingredients_array.forEach(ingredient => {
+        let parent = document.querySelector('#' + typeIngredient + ' .tabreceipt');
+        let divs = createItemsArray(typeIngredient, ingredient);
+        
         let li = document.createElement('li');
         li.setAttribute('class','tabreceipt__line');
         for (const oneDiv of Object.entries(divs)) {
             li.append(oneDiv[1]);
         }
+
         parent.appendChild(li);
-    }  
+
+    });
+
 }
 
 /**
@@ -524,17 +581,22 @@ window.addEventListener("load", function () {
     ---------------------- */
 
      /* infos ingredients */
-     let allIngredientsUrl = 
-     {
-         hops: "./assets/datas/hops.json", 
-         malts: "./assets/datas/malts.json", 
-         yeasts: "./assets/datas/yeasts.json"
-     };
+     let allIngredients = ['hops', 'malts', 'yeasts'];
  
      /* For each file get the data from it */
-     for (const ingredientType of Object.entries(allIngredientsUrl)) {
-         fetchDataJson(ingredientType);
-     } 
+     allIngredients.forEach(ingredient => {
+        fetchDataJson(ingredient);
+     });
+
+    /* ----------------------
+            SORT DATAS
+    ---------------------- */
+
+     let infos = document.querySelectorAll('.tabreceipt__line.main .tabreceipt__item');
+
+     infos.forEach(info => {
+        info.addEventListener("click", sortData);
+     });
 
     /* ----------------------
           CREATE RECEIPT
