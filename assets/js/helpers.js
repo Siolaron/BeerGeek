@@ -155,6 +155,38 @@ function calculColorEBC(listGrain,volumeBrew){
 function giveEBCtoRGB(ebc){
     return EBCtoRGB[ebc]
 }
+
+/** Gives total kg malt
+ *
+ * @param listGrain
+ * @returns {number}
+ */
+function totalMalt(listGrain){
+    let sumMalt = 0;
+    let malt
+
+    for(malt in listGrain){
+        sumMalt += parseInt(listGrain[malt].mass)
+    }
+    return sumMalt
+}
+
+/** Gives total gr hops
+ *
+ * @param listHops
+ * @returns {number}
+ */
+function totalHops(listHops){
+    let sumHops = 0;
+    let hop
+
+    for(hop in listHops){
+        sumHops += parseInt(listHops[hop].mass)
+    }
+    return sumHops
+}
+
+
 /**
  * On click retrieve the current tab and change the content according to it
  * 
@@ -188,4 +220,4 @@ function clickOnTab( tabClickEvent ) {
     concernedTabPane.classList.add("active");
 }
 
-export {amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol, calculBitterness, calculColorEBC, giveEBCtoRGB};
+export {amountSugarProduct, calculDensity, clickOnTab, finalDensity, calculAlcohol, calculBitterness, calculColorEBC, giveEBCtoRGB, totalHops, totalMalt};

@@ -6,7 +6,9 @@ import {
     calculAlcohol,
     calculBitterness,
     calculColorEBC,
-    giveEBCtoRGB
+    giveEBCtoRGB,
+    totalHops,
+    totalMalt
 } from './helpers.js';
 
 /* --------------------------------------------------------------------------------------------
@@ -134,10 +136,18 @@ function selectIngredientInModal(e) {
     let suffix_value = selected_ingredient.dataset.suffix
     let selected_name = selected_ingredient.dataset.name
     let selected_type = selected_ingredient.dataset.type
+    let potential = selected_ingredient.dataset.potential
+    let ebc = selected_ingredient.dataset.ebc
+    let alpha = selected_ingredient.dataset.alpha
+    let attenuation = selected_ingredient.dataset.attenuation
     let input_quantity = document.getElementById('add_quantity')
     let input_time = document.getElementById('add_time')
     let input_ingredient_name = document.getElementById('add_ingredient_name')
     let input_ingredient_type = document.getElementById('add_ingredient_type')
+    let input_ingredient_potential = document.getElementById('add_ingredient_potential')
+    let input_ingredient_ebc = document.getElementById('add_ingredient_ebc')
+    let input_ingredient_alpha = document.getElementById('add_ingredient_alpha')
+    let input_ingredient_attenuation = document.getElementById('add_ingredient_attenuation')
     let suffix_container = document.getElementById('add_quantity_suffix')
 
     // Remove the previous ingredient selected if there is any
@@ -153,6 +163,10 @@ function selectIngredientInModal(e) {
     input_time.value = ''
     input_ingredient_name.value = ''
     input_ingredient_type.value = ''
+    input_ingredient_potential.value = ''
+    input_ingredient_ebc.value = ''
+    input_ingredient_alpha.value = ''
+    input_ingredient_attenuation.value = ''
 
     // Set the correct suffix
     suffix_container.innerText = suffix_value
@@ -163,6 +177,18 @@ function selectIngredientInModal(e) {
     // Set the correct hidden input
     input_ingredient_name.value = selected_name
     input_ingredient_type.value = selected_type
+    if(potential){
+        input_ingredient_potential.value = potential
+    }
+    if(ebc){
+        input_ingredient_ebc.value = ebc
+    }
+    if(alpha){
+        input_ingredient_alpha.value = alpha
+    }
+    if(attenuation){
+        input_ingredient_attenuation.value = attenuation
+    }
 }
 
 /**
@@ -171,7 +197,7 @@ function selectIngredientInModal(e) {
 function checkAddIngredient(e) {
     e.preventDefault()
     let form_addingredient = e.target
-    let validate_name, validate_quantity, validate_step, validate_time
+    let validate_name, validate_type, validate_quantity, validate_step, validate_time
     let new_ingredient = []
     // Get the values
     let ingredient_name = form_addingredient.querySelector('#add_ingredient_name')
@@ -180,10 +206,14 @@ function checkAddIngredient(e) {
     let ingredient_quantity_suffix = document.getElementById('add_quantity_suffix').innerText
     let ingredient_step = form_addingredient.querySelector('#add_step')
     let ingredient_time = form_addingredient.querySelector('#add_time')
+    let ingredient_potential = form_addingredient.querySelector('#add_ingredient_potential')
+    let ingredient_ebc = form_addingredient.querySelector('#add_ingredient_ebc')
+    let ingredient_alpha = form_addingredient.querySelector('#add_ingredient_alpha')
+    let ingredient_attenuation = form_addingredient.querySelector('#add_ingredient_attenuation')
 
     // Check name
     if (ingredient_name.value == '' || ingredient_name.value == null || ingredient_name.value == 'undefined') {
-        setErrorAddIngredient('Aucun ingrédient n\'a été séléectionné')
+        setErrorAddIngredient('Aucun ingrédient n\'a été séléctionné')
         validate_name = false
     } else {
         validate_name = true
@@ -192,10 +222,10 @@ function checkAddIngredient(e) {
 
     // Check type
     if (ingredient_type.value == '' || ingredient_type.value == null || ingredient_type.value == 'undefined') {
-        setErrorAddIngredient('Aucun ingrédient n\'a été séléectionné')
-        validate_name = false
+        setErrorAddIngredient('Aucun ingrédient n\'a été séléctionné')
+        validate_type = false
     } else {
-        validate_name = true
+        validate_type = true
         new_ingredient['type'] = ingredient_type.value
     }
 
@@ -211,8 +241,8 @@ function checkAddIngredient(e) {
 
     // Check step
     if (ingredient_step.value == '' || ingredient_step.value == null || ingredient_step.value == 'undefined') {
-        setErrorAddIngredient('Aucune étape n\'a été sélectionnée')
-        ingredient_step = false
+        setErrorAddIngredient('Aucune étape n\'a été séléctionnée')
+        validate_step = false
     } else {
         validate_step = true
         new_ingredient['step'] = ingredient_step.value
@@ -227,8 +257,38 @@ function checkAddIngredient(e) {
         new_ingredient['time'] = ingredient_time.value
     }
 
-    if (validate_name && validate_quantity && validate_step && validate_time)
+    // Check potential
+    if (ingredient_potential.value == '' || ingredient_potential.value == null || ingredient_potential.value == 'undefined') {
+        new_ingredient['potential'] = 0
+    } else {
+        new_ingredient['potential'] = ingredient_potential.value
+    }
+
+    // Check ebc
+    if (ingredient_ebc.value == '' || ingredient_ebc.value == null || ingredient_ebc.value == 'undefined') {
+        new_ingredient['ebc'] = 0
+    } else {
+        new_ingredient['ebc'] = ingredient_ebc.value
+    }
+
+    // Check alpha
+    if (ingredient_alpha.value == '' || ingredient_alpha.value == null || ingredient_alpha.value == 'undefined') {
+        new_ingredient['alpha'] = 0
+    } else {
+        new_ingredient['alpha'] = ingredient_alpha.value
+    }
+
+    // Check attenuation
+    if (ingredient_attenuation.value == '' || ingredient_attenuation.value == null || ingredient_attenuation.value == 'undefined') {
+        new_ingredient['attenuation'] = 0
+    } else {
+        new_ingredient['attenuation'] = ingredient_attenuation.value
+    }
+
+    if (validate_name && validate_type && validate_quantity && validate_step && validate_time){
         validateAddIngredient(new_ingredient)
+        calculSpecifity(new_ingredient)
+    }
 }
 
 function setErrorAddIngredient(message) {
@@ -265,7 +325,239 @@ function validateAddIngredient(new_ingredient) {
     closeModalToAddIngredient()
 }
 
+/* --------------------------------------------------------------------------------------------
+                                    Calcul specifity
+-------------------------------------------------------------------------------------------- */
+let listGrain = {}
+let listHops = {}
+let listYeast = {}
 
+function calculSpecifity(new_ingredient) {
+    /* Variables */
+    let volumeBrew = document.querySelector('#receipt_volume').value
+    let efficiency = document.querySelector('#receipt_estimated_efficiency').value
+
+    /*Select display result*/
+    let massMalt = document.querySelector('#mass-malt')
+    let massHops = document.querySelector('#mass-hops')
+    let OG = document.querySelector('#originel-density')
+    let FG = document.querySelector('#final-density')
+    let IBU = document.querySelector('#bitterness')
+    let EBC = document.querySelector('#color')
+    let ABV = document.querySelector('#rate-alcohol')
+
+    if(new_ingredient.type == 'malt'){
+        let malt = {
+            [new_ingredient.name] : {
+                "mass": new_ingredient.quantity,
+                "potential": new_ingredient.potential,
+                "ebc": new_ingredient.ebc
+            }
+        }
+        Object.assign(listGrain,listGrain,malt)
+    }
+    if(new_ingredient.type == 'houblon'){
+        let hop = {
+            [new_ingredient.name]: {
+                "mass": new_ingredient.quantity,
+                "alpha": new_ingredient.alpha,
+                "duration": new_ingredient.time
+            }
+        }
+        Object.assign(listHops,listHops,hop)
+    }
+    if(new_ingredient.type == 'levure'){
+        let yeast = {
+            "attenuation" : new_ingredient.attenuation,
+        }
+        Object.assign(listYeast,listYeast,yeast)
+    }
+
+    document.querySelector('#mass-malt')
+
+    let sumMalt = totalMalt(listGrain)
+    let sumHops = totalHops(listHops)
+    let DO = calculDensity(listGrain, volumeBrew, efficiency)
+    let FD = finalDensity(DO.toFixed(3), listYeast["attenuation"])
+    let bitterness = calculBitterness(DO,listHops,volumeBrew)
+    let colorEBC = calculColorEBC(listGrain,volumeBrew)
+    let rateAlcohol = calculAlcohol(DO, FD)
+
+    /* Display values */
+    massMalt.innerText = sumMalt
+    massHops.innerText = sumHops
+    OG.innerText = DO.toFixed(3)
+    if (FD == '' || FD == null || FD == 'undefined' || isNaN(FD)) {
+        FG.innerText = 0
+    }else{
+        FG.innerText = FD.toFixed(3)
+    }
+    IBU.innerText = bitterness
+    EBC.innerText = colorEBC.toFixed(0)
+    if (rateAlcohol == '' || rateAlcohol == null || rateAlcohol == 'undefined' || isNaN(rateAlcohol)) {
+        ABV.innerText = 0
+    }else{
+        ABV.innerText = rateAlcohol.toFixed(1)
+    }
+
+
+    console.log(giveEBCtoRGB(colorEBC.toFixed(0)))
+}
+
+/* --------------------------------------------------------------------------------------------
+                                Display data from file
+-------------------------------------------------------------------------------------------- */
+
+/**
+ *  Fetch data from file
+ * 
+ * @param {*} ingredientType Type of ingredient, yeasts, hops or malts
+ * @param {*} sortBy By which type of information the table will be sorted
+ * @param {*} orderBy Whether the table will be sorted ascending or descending
+ */
+ function fetchDataJson(ingredientType, sortBy = null, orderBy = null) {
+
+    /* Get datas from json file */
+    fetch('./assets/datas/' + ingredientType + '.json')
+    .then(response => {
+        return response.json();
+    })
+    .then(function(ingredients) {
+        traitmentDataIngredients(ingredients, ingredientType, sortBy, orderBy);
+    });
+}
+
+/**
+ * Detects by which type of information and in which way the data will be sorted
+ * 
+ */
+function sortData() {
+
+    //Depending on the class, the data will be sorted in an ascending or descending manner
+    let orderBy;
+    orderBy = this.classList.contains('alpha') ?  orderBy = 'alpha' : orderBy = 'alpha-reverse';
+    this.classList.toggle('alpha');
+
+    //Detects the current ingredient and the type of information the user has clicked on
+    let sortBy = this.dataset.info;
+    let typeIngredient = document.querySelector('.tabs-ingredients__item.active').dataset.ingredient;
+
+    //Re fetch the data to sort them
+    fetchDataJson(typeIngredient, sortBy, orderBy);
+}
+
+/**
+ * For each ingredient we create an item in the table, we assign it to a line and this line is then added to the corresponding tab
+ * 
+ * @param {Array} ingredients
+ * @param {String} typeIngredient Type of ingredient : hops, malts or yeasts
+ * @param {String} sortBy Sorting according to ingredient information
+ * @param {String} orderBy Sort alphabetically from A to Z or from Z to A
+ */
+ function traitmentDataIngredients(ingredients, typeIngredient, sortBy, orderBy) {
+    ingredients = ingredients.data;
+
+    let ingredients_array = [];
+
+    //push all ingredients in an array to be able to sort them after
+    for (const ingredient of Object.entries(ingredients)) {
+        ingredients_array.push(ingredient);
+    }  
+    
+    //Sort datas
+    if(sortBy !== null) {
+        ingredients_array = ingredients_array.sort(function(a, b) {
+
+            if ( a[1][sortBy] < b[1][sortBy] ){
+                return -1;
+              }
+              if ( a[1][sortBy] > b[1][sortBy] ){
+                return 1;
+              }
+              return 0;
+        });
+
+        //Sorting data descending
+        if(orderBy == 'alpha-reverse') {
+            ingredients_array.reverse();
+        }
+
+        //Remove old lines to make room for new ones
+        let tab_active = document.querySelector('.tab-ingredients__pane.active');
+        let old_rows = tab_active.querySelectorAll(".tabreceipt__line:not(.main)");
+
+        old_rows.forEach(function(old_row) {
+            old_row.remove();
+        });
+    }
+
+    //Creating semantics for the data and assigning them to the corresponding tab
+    ingredients_array.forEach(ingredient => {
+        let parent = document.querySelector('#' + typeIngredient + ' .tabreceipt');
+        let divs = createItemsArray(typeIngredient, ingredient);
+        
+        let li = document.createElement('li');
+        li.setAttribute('class','tabreceipt__line');
+        for (const oneDiv of Object.entries(divs)) {
+            li.append(oneDiv[1]);
+        }
+
+        parent.appendChild(li);
+
+    });
+
+}
+
+/**
+ * Create div and assign text to it
+ * 
+ * @param {String} text 
+ * @returns 
+ */
+function createDiv(text) {
+    let div = document.createElement('div');
+    div.setAttribute('class','tabreceipt__item');
+
+    let p = document.createElement('p');
+    p.textContent = text;
+
+    div.appendChild(p);
+
+    return div;
+}
+
+/**
+ * We get several pieces of information, we assign them to divs and we add these divs to the line
+ * 
+ * @param {String} typeName 
+ * @param {Array} ingredient 
+ * @returns 
+ */
+function createItemsArray(typeName, ingredient) {
+    let divName;
+    let divType;
+    let divLaboratory;
+    let divOrigin;
+    let divQuantity = createDiv('1,00 oz');
+
+    if(typeName === 'yeasts') {
+
+        divName = createDiv(ingredient[1]['NAME']);
+        divType = createDiv(ingredient[1]['TYPE']);
+        divLaboratory = createDiv(ingredient[1]['LABORATORY']);
+
+        return { divName, divType, divLaboratory, divQuantity };
+
+    } else {
+
+        divName = createDiv(ingredient[1]['NAME']);
+        divType = createDiv(ingredient[1]['TYPE']);
+        divOrigin = createDiv(ingredient[1]['ORIGIN']);
+
+        return { divName, divType, divOrigin, divQuantity };
+    }
+
+}
 
 /* --------------------------------------------------------------------------------------------
                                     CALLS TO FUNCTION
@@ -283,6 +575,28 @@ window.addEventListener("load", function () {
         for (let i = 0; i < tabs.length; i++) {
             tabs[i].addEventListener("click", clickOnTab)
         }
+
+    /* ----------------------
+        GET DATAS FROM FILE
+    ---------------------- */
+
+     /* infos ingredients */
+     let allIngredients = ['hops', 'malts', 'yeasts'];
+ 
+     /* For each file get the data from it */
+     allIngredients.forEach(ingredient => {
+        fetchDataJson(ingredient);
+     });
+
+    /* ----------------------
+            SORT DATAS
+    ---------------------- */
+
+     let infos = document.querySelectorAll('.tabreceipt__line.main .tabreceipt__item');
+
+     infos.forEach(info => {
+        info.addEventListener("click", sortData);
+     });
 
     /* ----------------------
           CREATE RECEIPT
@@ -311,49 +625,4 @@ window.addEventListener("load", function () {
     if (form_addingredient != null)
         form_addingredient.addEventListener('submit', checkAddIngredient)
 })
-
-/* EXEMPLE calculDensity */
-
-let listGrain = {
-    acidMalt: {
-        "mass": 12,
-        "potential": 58.7,
-        "ebc":5.9
-    },
-    amberMalt: {
-        "mass": 12,
-        "potential": 75,
-        "ebc":43.3
-    },
-}
-
-let abbayeBelgian = {
-    attenuation: 72
-}
-
-/* exemple houblon*/
-let listHops = {
-    admiral : {
-        "mass" : 120,
-        "alpha" : 14.75,
-        "duration":30
-    },
-}
-
-let DO = calculDensity(listGrain, 200, 80)
-console.log(DO.toFixed(3))
-
-let FD = finalDensity(DO.toFixed(3), abbayeBelgian["attenuation"])
-console.log(FD.toFixed(3))
-
-let rateAlcohol = calculAlcohol(DO, FD)
-console.log(rateAlcohol.toFixed(1))
-
-let bitterness = calculBitterness(DO,listHops,200)
-console.log(bitterness)
-
-let colorEBC = calculColorEBC(listGrain,200)
-console.log(colorEBC.toFixed(0))
-
-console.log(giveEBCtoRGB(colorEBC.toFixed(0)))
 

@@ -268,7 +268,8 @@ main {
 
 .tabreceipt__item {
     padding: .5rem;
-    border: solid 1px var(--c-dark);
+    border: solid 1px var(--c-black);
+    cursor: pointer;
 }
 
 .tabreceipt__item p {
