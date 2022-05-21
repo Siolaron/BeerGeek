@@ -63,6 +63,7 @@
                         <p class="tabreceipt__content"></p>
                         <p class="tabreceipt__suffix">minutes</p>
                     </div>
+                    <p class="tabreceipt__item remove">x</p>
                 </li>
             </template>
         </ul>
