@@ -69,6 +69,10 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+body.home {
+    background: url('../img/vintage-texture.jpg') no-repeat center top / 100% auto;
+}
+
 img, picture, video, canvas, svg {
     display: block;
     max-width: 100%;
@@ -102,7 +106,6 @@ body {
     grid-template-areas:
         'navbar'
         'content';
-    background: url('../img/vintage-texture.jpg') repeat center / 100% auto;
 }
 
 main {
@@ -137,42 +140,6 @@ main {
 -------------------------------------------------------------------------------------------- */
 
 /* ------------------------
-      HOME CONTAINER
------------------------- */
-
-.home__container {
-    height: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    overflow-y: hidden;
-}
-
-.home__title {
-    font-size: calc(var(--fs-xxl) * 3.5);
-    line-height: 1;
-}
-
-.home__title:first-of-type {
-    width: 5ch;
-    align-self: center;
-    justify-self: flex-end;
-}
-
-.home__title:last-of-type {
-    margin-bottom: 40px;
-    align-self: flex-end;
-}
-
-.home__beer {
-    width: 90%;
-    height: 90%;
-    object-fit: contain;
-    align-self: center;
-    justify-self: center;
-}
-
-
-/* ------------------------
        MAIN NAV BAR
 ------------------------ */
 
@@ -199,6 +166,56 @@ main {
     margin-inline: auto;
     display: flex;
     column-gap: calc(10px + 2.5vw);
+}
+
+/* ------------------------
+        PRELUDE
+------------------------ */
+
+.prelude {
+    height: calc(100vh - 6rem);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow-y: hidden;
+}
+
+.prelude__title {
+    font-size: calc(var(--fs-xxl) * 3.5);
+    line-height: 1;
+}
+
+.prelude__title:first-of-type {
+    width: 5ch;
+    align-self: center;
+    justify-self: flex-end;
+}
+
+.prelude__title:last-of-type {
+    margin-bottom: 40px;
+    align-self: flex-end;
+}
+
+.prelude__beer {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    align-self: center;
+    justify-self: center;
+}
+
+/* ------------------------
+       INFORMATIONS
+------------------------ */
+
+.informations {
+    margin-inline: auto;
+    display: flex;
+    background-color: var(--c-dark);
+    color: var(--c-grey);
+}
+
+.informations__title {
+    color: var(--c-light);
 }
 
 /* ------------------------
@@ -251,7 +268,7 @@ main {
 
 .tabreceipt__item {
     padding: .5rem;
-    border: solid 1px var(--c-black);
+    border: solid 1px var(--c-dark);
 }
 
 .tabreceipt__item p {
@@ -319,7 +336,7 @@ main {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
-    border: solid 1px var(--c-black);
+    border: solid 1px var(--c-dark);
     border-radius: 5px;
     background-color: var(--c-white);
 }
@@ -351,7 +368,7 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(45deg);
-    background-color: var(--c-black);
+    background-color: var(--c-dark);
 }
 
 .modal-ingredients__cross::after {
@@ -367,7 +384,7 @@ main {
 
 .tab-ingredients__list-item {
     padding: .35rem .5rem;
-    border: solid 1px var(--c-black);
+    border: solid 1px var(--c-dark);
     font-size: var(--fs-s);
     cursor: pointer;
 }
@@ -397,7 +414,7 @@ main {
 
 .form__add-ingredient__label {
     margin-bottom: .25rem;
-    color: var(--c-black);
+    color: var(--c-dark);
     font-size: var(--fs-s);
 }
 
@@ -486,12 +503,37 @@ main {
 /* CTA Classic */
 
 .cta {
-    padding: .5rem 1rem;
-    border: solid 2px var(--c-primary);
-    background-color: transparent;
-    color: var(--c-primary);
+    padding: 15px 20px;
+    position: relative;
+    border: none;
+    background-color: var(--c-primary);
+    color: var(--c-dark);
+    text-transform: uppercase;
+    font-weight: var(--fw-semi_bold);
     cursor: pointer;
     transition: all .15s ease-in;
+}
+
+.cta::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 6px;
+    right: -4px;
+    z-index: -2;
+    border: solid 1px var(--c-dark);
+}
+
+.cta::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: var(--c-primary);
 }
 
 .cta:hover {
@@ -500,11 +542,7 @@ main {
 }
 
 .cta.disabled {
-    border-color: var(--c-black);
-    background-color: var(--c-grey);
-    color: var(--c-black);
-    opacity: .75;
-    pointer-events: none;
+    cursor: not-allowed;
 }
 
 /* Hover underlined */

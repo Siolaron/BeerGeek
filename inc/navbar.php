@@ -5,7 +5,7 @@
     <div class="mainnavbar__content--center">
         <ul class="mainnavbar__list">
             <li class="mainnavbar__item fw--semibold"><a href="../inventaire.php" class="underlined">Inventaire</a></li>
-            <li class="mainnavbar__item fw--semibold"><a href="../creer-une-recette.php" class="underlined">Créer une recette</a></li>
+            <li class="mainnavbar__item fw--semibold"><a href="../creer-une-recette.php" class="underlined">La fabrique à bière</a></li>
         </ul>
     </div>
 </nav>

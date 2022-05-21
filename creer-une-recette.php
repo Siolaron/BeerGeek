@@ -1,4 +1,6 @@
-<?php require_once('./inc/head.php') ?>
+<?php
+$is_home = false;
+require_once('./inc/head.php') ?>
 
 <main>
     <h1>Créer une recette</h1>
@@ -22,7 +24,7 @@
             <input type="number" name="receipt_estimated_efficiency" id="receipt_estimated_efficiency" min="1" max="100" class="initreceipt__input">
             <p class="initreceipt__suffix">%</p>
         </div>
-        <input type="submit" value="Créer ma recette" class="cta">
+        <button type="submit" class="cta">Créer ma recette</button>
     </form>
     <button class="cta disabled" id="add_ingredient">Ajouter un ingrédient</button>
     <div class="l-receipttabs">
