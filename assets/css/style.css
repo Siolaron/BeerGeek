@@ -2,15 +2,34 @@
                                         GENERAL
 -------------------------------------------------------------------------------------------- */
 
+@font-face {
+    font-family: 'Nexa Rust Slab';
+    src: url('./fonts/NexaRustSlab.woff2') format('woff2'),
+        url('./fonts/NexaRustSlab.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Bookman Old Style';
+    src: url('./fonts/BookmanOldStyle.woff2') format('woff2'),
+        url('./fonts/BookmanOldStyle.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
 :root {
     /* Colors */
-    --c-secondary: #FD8008;
-    --c-primary: #0F80FF;
-    --c-error: #ea1c1c;
-    --c-light-grey: #d0d0d0;
-    --c-dark-grey: #575757;
-    --c-black: #000000;
-    --c-white: #FFFFFF;
+    --c-primary: #FBA200;
+    --c-secondary: #3F2700;
+    --c-error: #dd3f0e;
+    --c-grey: #525150;
+    --c-dark: #1C1201;
+    --c-light: #FDF5E8;
 
     /* Font family */
     /* --ff-name */
@@ -21,6 +40,11 @@
     --fs-m: 1em;
     --fs-l: calc(var(--fs-m)* var(--fs-ratio));
     --fs-xl: calc(var(--fs-l)* var(--fs-ratio));
+    --fs-xxl: calc(var(--fs-xl)* var(--fs-ratio));
+
+    /* Font Family */
+    --ff-nuxt: 'Nexa Rust Slab';
+    --ff-montserrat: 'Montserrat', sans-serif;
 
     /* Font weight */
     --fw-regular: 400;
@@ -34,14 +58,19 @@
 }
 
 html {
-    font-family: sans-serif;
+    font-family: var(--ff-montserrat);
     font-size: var(--fs-m);
     line-height: 1.45;
     font-weight: var(--fw-regular);
+    background-color: var(--c-light);
 }
 
 body {
     -webkit-font-smoothing: antialiased;
+}
+
+body.home {
+    background: url('../img/vintage-texture.jpg') no-repeat center top / 100% auto;
 }
 
 img, picture, video, canvas, svg {
@@ -51,6 +80,7 @@ img, picture, video, canvas, svg {
 
 :is(a, a:hover, button) {
     text-decoration: none;
+    color: var(--c-dark);
 }
 
 li {
@@ -59,22 +89,6 @@ li {
 
 h1, h2, h3, h4, h5, h6, p, blockquote {
     max-width: 80ch;
-}
-
-h1 {
-    font-size: var(--fs-xl);
-}
-
-h2 {
-    font-size: var(--fs-l);
-}
-
-h3 {
-    font-size: var(--fs-m);
-}
-
-h4 {
-    font-size: var(--fs-s);
 }
 
 /* --------------------------------------------------------------------------------------------
@@ -92,11 +106,6 @@ body {
     grid-template-areas:
         'navbar'
         'content';
-    row-gap: 1rem;
-}
-
-.mainnavbar {
-    grid-area: navbar;
 }
 
 main {
@@ -106,6 +115,7 @@ main {
 /* ------------------------
       RECEIPT TABS
 ------------------------ */
+
 
 .l-receipttabs {
     display: grid;
@@ -119,11 +129,197 @@ main {
 -------------------------------------------------------------------------------------------- */
 
 /* ------------------------
+       MAIN BANNER
+------------------------ */
+
+.mainbanner {
+    padding: 0 9vw;
+    display: flex;
+    align-items: center;
+    position: relative;
+    border-bottom: 1px solid var(--c-grey);
+}
+
+.mainbanner::after {
+    content: '';
+    width: 33%;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 1px solid var(--c-grey);
+    border-right: 1px solid var(--c-grey);
+}
+
+/* ------------------------
+        PRELUDE
+------------------------ */
+
+.prelude {
+    height: calc(100vh - 6rem);
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.prelude__title {
+    font-size: calc(var(--fs-xxl) * 3.5);
+    line-height: 1;
+}
+
+.prelude__title--first {
+    width: 5ch;
+    align-self: center;
+    justify-self: flex-end;
+}
+
+.prelude__beer {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    align-self: center;
+    justify-self: center;
+}
+
+.prelude__right-container {
+    height: 100%;
+    padding: 75px 0 40px;
+    display: grid;
+    align-content: space-between;
+}
+
+.prelude__fabrique {
+    justify-self: center;
+}
+
+.prelude__fabrique-square {
+    width: 150px;
+    height: 150px;
+    border: solid 1px var(--c-grey);
+}
+
+.prelude__fabrique-img {
+    width: 95%;
+    margin-inline: auto;
+    transform: translateY(-25%);
+}
+
+.prelude__subtitle {
+    margin: 10px 0;
+}
+
+.prelude__cta {
+    display: flex;
+    align-items: center;
+    font-weight: var(--fw-semi_bold);
+}
+
+.prelude__arrow {
+    width: 30px;
+    margin-left: 15px;
+    position: relative;
+    z-index: 2;
+    transition: transform .2s cubic-bezier(0.39, 0.58, 0.57, 1);
+}
+
+.prelude__cta-square {
+    width: 35px;
+    height: 35px;
+    transform: translateX(-15px);
+    background-color: var(--c-primary);
+}
+
+.prelude__fabrique:hover .prelude__arrow {
+    transform: translateX(8px);
+}
+
+
+/* ------------------------
+       INVENTAIRE
+------------------------ */
+
+.inventaire {
+    position: relative;
+    z-index: 2;
+}
+
+.inventaire__title {
+    margin-bottom: 50px;
+    text-align: center;
+    font-size: calc(var(--fs-xxl) * 3.5);
+    line-height: 1;
+}
+
+/* ------------------------
+       INFORMATIONS
+------------------------ */
+
+.informations {
+    margin: -50px 0 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+.informations::before {
+    content: '';
+    width: 140vw;
+    height: 300px;
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    z-index: 1;
+    transform: translateX(-50%);
+    border-radius: 50% / 100% 100% 0 0;
+    background-color: var(--c-light);
+}
+
+.informations__inner {
+    width: 90%;
+    margin-inline: auto;
+    margin-bottom: 50px;
+    padding: 50px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 35px;
+    position: relative;
+    z-index: 2;
+    background-color: var(--c-dark);
+    color: var(--c-grey);
+}
+
+.informations__item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    column-gap: 15px;
+}
+
+.informations__icon-container {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--c-secondary);
+}
+
+.informations__icon {
+    width: 55%;
+}
+
+.informations__title {
+    color: var(--c-light);
+}
+
+/* ------------------------
            TABS
 ------------------------ */
 
 .tabs-ingredients__list {
+    margin-bottom: 25px;
     display: flex;
+    justify-content: center;
+    column-gap: 75px;
 }
 
 .tabs-ingredients__item.active {
@@ -163,12 +359,12 @@ main {
 }
 
 .tabreceipt__line.main {
-    background-color: var(--c-light-grey);
+    background-color: var(--c-dark);
+    color: var(--c-light);
 }
 
 .tabreceipt__item {
     padding: .5rem;
-    border: solid 1px var(--c-black);
     cursor: pointer;
 }
 
@@ -237,7 +433,7 @@ main {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
-    border: solid 1px var(--c-black);
+    border: solid 1px var(--c-dark);
     border-radius: 5px;
     background-color: var(--c-white);
 }
@@ -257,7 +453,7 @@ main {
     top: 10px;
     right: 10px;
     border-radius: 50%;
-    background-color: var(--c-light-grey);
+    background-color: var(--c-grey);
     cursor: pointer;
 }
 
@@ -269,7 +465,7 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(45deg);
-    background-color: var(--c-black);
+    background-color: var(--c-dark);
 }
 
 .modal-ingredients__cross::after {
@@ -285,7 +481,7 @@ main {
 
 .tab-ingredients__list-item {
     padding: .35rem .5rem;
-    border: solid 1px var(--c-black);
+    border: solid 1px var(--c-dark);
     font-size: var(--fs-s);
     cursor: pointer;
 }
@@ -295,7 +491,7 @@ main {
 }
 
 .tab-ingredients__list-item:is(:hover, .selected) {
-    background-color: var(--c-light-grey);
+    background-color: var(--c-grey);
 }
 
 /* Form */
@@ -315,7 +511,7 @@ main {
 
 .form__add-ingredient__label {
     margin-bottom: .25rem;
-    color: var(--c-dark-grey);
+    color: var(--c-dark);
     font-size: var(--fs-s);
 }
 
@@ -361,20 +557,80 @@ main {
 }
 
 /* --------------------------------------------------------------------------------------------
-                                        UTILITIE
+                                        UTILITIES
 -------------------------------------------------------------------------------------------- */
 
 /* ------------------------
-          CTA
+          FONTS
+------------------------ */
+/* Font family */
+
+.ff--nuxt {
+    font-family: var(--ff-nuxt);
+}
+
+/* Font weight */
+
+.fw--semibold {
+    font-weight: var(--fw-semi_bold);
+}
+
+/* Font size */
+
+.fs--s {
+    font-size: var(--fs-s);
+}
+
+.fs--m {
+    font-size: var(--fs-m);
+}
+
+.fs--l {
+    font-size: var(--fs-l);
+}
+
+.fs--xl {
+    font-size: var(--fs-xl);
+}
+
+/* ------------------------
+    CLICKABLE ELEMENTS
 ------------------------ */
 
+/* CTA Classic */
+
 .cta {
-    padding: .5rem 1rem;
-    border: solid 2px var(--c-primary);
-    background-color: transparent;
-    color: var(--c-primary);
+    padding: 15px 20px;
+    position: relative;
+    border: none;
+    background-color: var(--c-primary);
+    color: var(--c-dark);
+    text-transform: uppercase;
+    font-weight: var(--fw-semi_bold);
     cursor: pointer;
     transition: all .15s ease-in;
+}
+
+.cta::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 6px;
+    right: -4px;
+    z-index: -2;
+    border: solid 1px var(--c-dark);
+}
+
+.cta::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-color: var(--c-primary);
 }
 
 .cta:hover {
@@ -383,9 +639,28 @@ main {
 }
 
 .cta.disabled {
-    border-color: var(--c-dark-grey);
-    background-color: var(--c-light-grey);
-    color: var(--c-dark-grey);
-    opacity: .75;
-    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* Hover highlighted */
+
+.highlighted {
+    position: relative;
+    z-index: 2;
+}
+
+.highlighted::before {
+    content: '';
+    width: 0;
+    height: 120%;
+    position: absolute;
+    top: -10%;
+    left: -6%;
+    z-index: -1;
+    background-color: var(--c-primary);
+    transition: width .55s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.highlighted:hover::before {
+    width: 112%;
 }

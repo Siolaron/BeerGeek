@@ -9,5 +9,5 @@
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
-<body>
+<body <?php if ($is_home) echo 'class="home"' ?>>
     <?php require_once('./inc/navbar.php') ?>
