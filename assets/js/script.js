@@ -287,8 +287,30 @@ function checkAddIngredient(e) {
 
     if (validate_name && validate_type && validate_quantity && validate_step && validate_time){
         validateAddIngredient(new_ingredient)
-        calculSpecifity(new_ingredient)
+        addListIngredient(new_ingredient)
+        calculSpecifity()
     }
+}
+
+function removeIngredient(e){
+    e.preventDefault()
+    let parent = e.target.parentElement
+
+    let type = parent.querySelector('.tabreceipt__item.type > .tabreceipt__content').innerText
+    let nameType = parent.querySelector('.tabreceipt__item.name > .tabreceipt__content').innerText
+
+    if(type == 'Malt'){
+        delete listGrain[nameType]
+    }
+    else if (type == 'Houblon'){
+        delete listHops[nameType]
+    }
+    else if(type == 'Levure'){
+        delete listYeast['attenuation']
+    }
+
+    calculSpecifity()
+    parent.remove()
 }
 
 function setErrorAddIngredient(message) {
@@ -321,6 +343,13 @@ function validateAddIngredient(new_ingredient) {
     // Set the new line on our tab
     tab_receipt.appendChild(clone)
 
+    let remove_ingredients = document.querySelectorAll('.tabreceipt__item.remove')
+    console.log(remove_ingredients)
+    if (remove_ingredients != null)
+        remove_ingredients.forEach(remove_ingredient => {
+            remove_ingredient.addEventListener('click', removeIngredient)
+        })
+
     // Close the modal
     closeModalToAddIngredient()
 }
@@ -332,7 +361,7 @@ let listGrain = {}
 let listHops = {}
 let listYeast = {}
 
-function calculSpecifity(new_ingredient) {
+function calculSpecifity() {
     /* Variables */
     let volumeBrew = document.querySelector('#receipt_volume').value
     let efficiency = document.querySelector('#receipt_estimated_efficiency').value
@@ -345,35 +374,6 @@ function calculSpecifity(new_ingredient) {
     let IBU = document.querySelector('#bitterness')
     let EBC = document.querySelector('#color')
     let ABV = document.querySelector('#rate-alcohol')
-
-    if(new_ingredient.type == 'malt'){
-        let malt = {
-            [new_ingredient.name] : {
-                "mass": new_ingredient.quantity,
-                "potential": new_ingredient.potential,
-                "ebc": new_ingredient.ebc
-            }
-        }
-        Object.assign(listGrain,listGrain,malt)
-    }
-    if(new_ingredient.type == 'houblon'){
-        let hop = {
-            [new_ingredient.name]: {
-                "mass": new_ingredient.quantity,
-                "alpha": new_ingredient.alpha,
-                "duration": new_ingredient.time
-            }
-        }
-        Object.assign(listHops,listHops,hop)
-    }
-    if(new_ingredient.type == 'levure'){
-        let yeast = {
-            "attenuation" : new_ingredient.attenuation,
-        }
-        Object.assign(listYeast,listYeast,yeast)
-    }
-
-    document.querySelector('#mass-malt')
 
     let sumMalt = totalMalt(listGrain)
     let sumHops = totalHops(listHops)
@@ -404,6 +404,34 @@ function calculSpecifity(new_ingredient) {
     console.log(giveEBCtoRGB(colorEBC.toFixed(0)))
 }
 
+function addListIngredient(new_ingredient){
+    if(new_ingredient.type == 'malt'){
+        let malt = {
+            [new_ingredient.name] : {
+                "mass": new_ingredient.quantity,
+                "potential": new_ingredient.potential,
+                "ebc": new_ingredient.ebc
+            }
+        }
+        Object.assign(listGrain,listGrain,malt)
+    }
+    if(new_ingredient.type == 'houblon'){
+        let hop = {
+            [new_ingredient.name]: {
+                "mass": new_ingredient.quantity,
+                "alpha": new_ingredient.alpha,
+                "duration": new_ingredient.time
+            }
+        }
+        Object.assign(listHops,listHops,hop)
+    }
+    if(new_ingredient.type == 'levure'){
+        let yeast = {
+            "attenuation" : new_ingredient.attenuation,
+        }
+        Object.assign(listYeast,listYeast,yeast)
+    }
+}
 /* --------------------------------------------------------------------------------------------
                                 Display data from file
 -------------------------------------------------------------------------------------------- */
@@ -624,5 +652,6 @@ window.addEventListener("load", function () {
     let form_addingredient = document.getElementById('form__add-ingredient')
     if (form_addingredient != null)
         form_addingredient.addEventListener('submit', checkAddIngredient)
+
 })
 
