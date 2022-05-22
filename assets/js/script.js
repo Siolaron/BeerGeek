@@ -115,7 +115,7 @@ function validateInitReceipt() {
  */
 function openModalToAddIngredient() {
     let modal = document.getElementById('modal-ingredients')
-    modal.style.display = 'grid'
+    modal.style.display = 'block'
 }
 
 /**
@@ -177,16 +177,16 @@ function selectIngredientInModal(e) {
     // Set the correct hidden input
     input_ingredient_name.value = selected_name
     input_ingredient_type.value = selected_type
-    if(potential){
+    if (potential) {
         input_ingredient_potential.value = potential
     }
-    if(ebc){
+    if (ebc) {
         input_ingredient_ebc.value = ebc
     }
-    if(alpha){
+    if (alpha) {
         input_ingredient_alpha.value = alpha
     }
-    if(attenuation){
+    if (attenuation) {
         input_ingredient_attenuation.value = attenuation
     }
 }
@@ -285,27 +285,27 @@ function checkAddIngredient(e) {
         new_ingredient['attenuation'] = ingredient_attenuation.value
     }
 
-    if (validate_name && validate_type && validate_quantity && validate_step && validate_time){
+    if (validate_name && validate_type && validate_quantity && validate_step && validate_time) {
         validateAddIngredient(new_ingredient)
         addListIngredient(new_ingredient)
         calculSpecifity()
     }
 }
 
-function removeIngredient(e){
+function removeIngredient(e) {
     e.preventDefault()
     let parent = e.target.parentElement
 
     let type = parent.querySelector('.tabreceipt__item.type > .tabreceipt__content').innerText
     let nameType = parent.querySelector('.tabreceipt__item.name > .tabreceipt__content').innerText
 
-    if(type == 'Malt'){
+    if (type == 'Malt') {
         delete listGrain[nameType]
     }
-    else if (type == 'Houblon'){
+    else if (type == 'Houblon') {
         delete listHops[nameType]
     }
-    else if(type == 'Levure'){
+    else if (type == 'Levure') {
         delete listYeast['attenuation']
     }
 
@@ -344,7 +344,6 @@ function validateAddIngredient(new_ingredient) {
     tab_receipt.appendChild(clone)
 
     let remove_ingredients = document.querySelectorAll('.tabreceipt__item.remove')
-    console.log(remove_ingredients)
     if (remove_ingredients != null)
         remove_ingredients.forEach(remove_ingredient => {
             remove_ingredient.addEventListener('click', removeIngredient)
@@ -366,7 +365,7 @@ function calculSpecifity() {
     let volumeBrew = document.querySelector('#receipt_volume').value
     let efficiency = document.querySelector('#receipt_estimated_efficiency').value
 
-    /*Select display result*/
+    /* Select display result */
     let massMalt = document.querySelector('#mass-malt')
     let massHops = document.querySelector('#mass-hops')
     let OG = document.querySelector('#originel-density')
@@ -379,8 +378,8 @@ function calculSpecifity() {
     let sumHops = totalHops(listHops)
     let DO = calculDensity(listGrain, volumeBrew, efficiency)
     let FD = finalDensity(DO.toFixed(3), listYeast["attenuation"])
-    let bitterness = calculBitterness(DO,listHops,volumeBrew)
-    let colorEBC = calculColorEBC(listGrain,volumeBrew)
+    let bitterness = calculBitterness(DO, listHops, volumeBrew)
+    let colorEBC = calculColorEBC(listGrain, volumeBrew)
     let rateAlcohol = calculAlcohol(DO, FD)
 
     /* Display values */
@@ -389,33 +388,44 @@ function calculSpecifity() {
     OG.innerText = DO.toFixed(3)
     if (FD == '' || FD == null || FD == 'undefined' || isNaN(FD)) {
         FG.innerText = 0
-    }else{
+    } else {
         FG.innerText = FD.toFixed(3)
     }
     IBU.innerText = bitterness
     EBC.innerText = colorEBC.toFixed(0)
     if (rateAlcohol == '' || rateAlcohol == null || rateAlcohol == 'undefined' || isNaN(rateAlcohol)) {
         ABV.innerText = 0
-    }else{
+    } else {
         ABV.innerText = rateAlcohol.toFixed(1)
     }
 
-
-    console.log(giveEBCtoRGB(colorEBC.toFixed(0)))
+    // Get hex color for beer
+    let beer_hex;
+    if (colorEBC.toFixed(0) <= 30) {
+        beer_hex = giveEBCtoRGB(colorEBC.toFixed(0))
+    } else {
+        beer_hex = giveEBCtoRGB(30)
+    }
+    // Change beer color
+    changeBeerColor(beer_hex);
 }
 
-function addListIngredient(new_ingredient){
-    if(new_ingredient.type == 'malt'){
+function changeBeerColor(new_color) {
+    document.getElementById('beer_color_hex').style.fill = new_color
+}
+
+function addListIngredient(new_ingredient) {
+    if (new_ingredient.type == 'malt') {
         let malt = {
-            [new_ingredient.name] : {
+            [new_ingredient.name]: {
                 "mass": new_ingredient.quantity,
                 "potential": new_ingredient.potential,
                 "ebc": new_ingredient.ebc
             }
         }
-        Object.assign(listGrain,listGrain,malt)
+        Object.assign(listGrain, listGrain, malt)
     }
-    if(new_ingredient.type == 'houblon'){
+    if (new_ingredient.type == 'houblon') {
         let hop = {
             [new_ingredient.name]: {
                 "mass": new_ingredient.quantity,
@@ -423,13 +433,13 @@ function addListIngredient(new_ingredient){
                 "duration": new_ingredient.time
             }
         }
-        Object.assign(listHops,listHops,hop)
+        Object.assign(listHops, listHops, hop)
     }
-    if(new_ingredient.type == 'levure'){
+    if (new_ingredient.type == 'levure') {
         let yeast = {
-            "attenuation" : new_ingredient.attenuation,
+            "attenuation": new_ingredient.attenuation,
         }
-        Object.assign(listYeast,listYeast,yeast)
+        Object.assign(listYeast, listYeast, yeast)
     }
 }
 /* --------------------------------------------------------------------------------------------
@@ -443,16 +453,16 @@ function addListIngredient(new_ingredient){
  * @param {*} sortBy By which type of information the table will be sorted
  * @param {*} orderBy Whether the table will be sorted ascending or descending
  */
- function fetchDataJson(ingredientType, sortBy = null, orderBy = null) {
+function fetchDataJson(ingredientType, sortBy = null, orderBy = null) {
 
     /* Get datas from json file */
     fetch('./assets/datas/' + ingredientType + '.json')
-    .then(response => {
-        return response.json();
-    })
-    .then(function(ingredients) {
-        traitmentDataIngredients(ingredients, ingredientType, sortBy, orderBy);
-    });
+        .then(response => {
+            return response.json();
+        })
+        .then(function (ingredients) {
+            traitmentDataIngredients(ingredients, ingredientType, sortBy, orderBy);
+        });
 }
 
 /**
@@ -463,7 +473,7 @@ function sortData() {
 
     //Depending on the class, the data will be sorted in an ascending or descending manner
     let orderBy;
-    orderBy = this.classList.contains('alpha') ?  orderBy = 'alpha' : orderBy = 'alpha-reverse';
+    orderBy = this.classList.contains('alpha') ? orderBy = 'alpha' : orderBy = 'alpha-reverse';
     this.classList.toggle('alpha');
 
     //Detects the current ingredient and the type of information the user has clicked on
@@ -482,7 +492,7 @@ function sortData() {
  * @param {String} sortBy Sorting according to ingredient information
  * @param {String} orderBy Sort alphabetically from A to Z or from Z to A
  */
- function traitmentDataIngredients(ingredients, typeIngredient, sortBy, orderBy) {
+function traitmentDataIngredients(ingredients, typeIngredient, sortBy, orderBy) {
     ingredients = ingredients.data;
 
     let ingredients_array = [];
@@ -490,23 +500,23 @@ function sortData() {
     //push all ingredients in an array to be able to sort them after
     for (const ingredient of Object.entries(ingredients)) {
         ingredients_array.push(ingredient);
-    }  
-    
-    //Sort datas
-    if(sortBy !== null) {
-        ingredients_array = ingredients_array.sort(function(a, b) {
+    }
 
-            if ( a[1][sortBy] < b[1][sortBy] ){
+    //Sort datas
+    if (sortBy !== null) {
+        ingredients_array = ingredients_array.sort(function (a, b) {
+
+            if (a[1][sortBy] < b[1][sortBy]) {
                 return -1;
-              }
-              if ( a[1][sortBy] > b[1][sortBy] ){
+            }
+            if (a[1][sortBy] > b[1][sortBy]) {
                 return 1;
-              }
-              return 0;
+            }
+            return 0;
         });
 
         //Sorting data descending
-        if(orderBy == 'alpha-reverse') {
+        if (orderBy == 'alpha-reverse') {
             ingredients_array.reverse();
         }
 
@@ -514,7 +524,7 @@ function sortData() {
         let tab_active = document.querySelector('.tab-ingredients__pane.active');
         let old_rows = tab_active.querySelectorAll(".tabreceipt__line:not(.main)");
 
-        old_rows.forEach(function(old_row) {
+        old_rows.forEach(function (old_row) {
             old_row.remove();
         });
     }
@@ -523,9 +533,9 @@ function sortData() {
     ingredients_array.forEach(ingredient => {
         let parent = document.querySelector('#' + typeIngredient + ' .tabreceipt');
         let divs = createItemsArray(typeIngredient, ingredient);
-        
+
         let li = document.createElement('li');
-        li.setAttribute('class','tabreceipt__line');
+        li.setAttribute('class', 'tabreceipt__line');
         for (const oneDiv of Object.entries(divs)) {
             li.append(oneDiv[1]);
         }
@@ -544,7 +554,7 @@ function sortData() {
  */
 function createDiv(text) {
     let div = document.createElement('div');
-    div.setAttribute('class','tabreceipt__item');
+    div.setAttribute('class', 'tabreceipt__item');
 
     let p = document.createElement('p');
     p.textContent = text;
@@ -568,7 +578,7 @@ function createItemsArray(typeName, ingredient) {
     let divOrigin;
     let divQuantity = createDiv('1,00 oz');
 
-    if(typeName === 'yeasts') {
+    if (typeName === 'yeasts') {
 
         divName = createDiv(ingredient[1]['NAME']);
         divType = createDiv(ingredient[1]['TYPE']);
@@ -608,23 +618,23 @@ window.addEventListener("load", function () {
         GET DATAS FROM FILE
     ---------------------- */
 
-     /* infos ingredients */
-     let allIngredients = ['hops', 'malts', 'yeasts'];
- 
-     /* For each file get the data from it */
-     allIngredients.forEach(ingredient => {
+    /* infos ingredients */
+    let allIngredients = ['hops', 'malts', 'yeasts'];
+
+    /* For each file get the data from it */
+    allIngredients.forEach(ingredient => {
         fetchDataJson(ingredient);
-     });
+    });
 
     /* ----------------------
             SORT DATAS
     ---------------------- */
 
-     let infos = document.querySelectorAll('.tabreceipt__line.main .tabreceipt__item');
+    let infos = document.querySelectorAll('.tabreceipt__line.main .tabreceipt__item');
 
-     infos.forEach(info => {
+    infos.forEach(info => {
         info.addEventListener("click", sortData);
-     });
+    });
 
     /* ----------------------
           CREATE RECEIPT
