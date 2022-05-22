@@ -7,7 +7,7 @@ require_once('./inc/head.php') ?>
         <h2 class="prelude__title prelude__title--first ff--nuxt">Make beer</h2>
         <img src="./assets//img/beer.png" alt="beer illustration" class="prelude__beer">
         <div class="prelude__right-container">
-            <a href="../creer-une-recette.php" class="prelude__fabrique">
+            <a href="../fabrique-a-biere.php" class="prelude__fabrique">
                 <div class="prelude__fabrique-square">
                     <img src="./assets/img/fabrique-biere.png" alt="image fabrique à bière" class="prelude__fabrique-img">
                 </div>
