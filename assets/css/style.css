@@ -390,6 +390,19 @@ main {
 .tabreceipt__item {
     padding: .5rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.tabreceipt__item.alpha svg {
+    transform: rotate(180deg);
+    transition: all 0.3s linear;
+}
+
+.tabreceipt__item svg {
+    margin-left: 1rem;
+    transform: rotate(0deg);
+    transition: all 0.3s linear;
 }
 
 .tabreceipt__item p {
