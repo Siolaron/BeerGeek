@@ -454,22 +454,22 @@ var ingredients_array;
  * @param {*} sortBy By which type of information the table will be sorted
  * @param {*} orderBy Whether the table will be sorted ascending or descending
  */
-     function fetchDataJson(ingredientType, applyTreatmentData, sortBy = null, orderBy = null) {
-        return new Promise((resolve, reject) => {
-            /* Get datas from json file */
-            fetch('./assets/datas/' + ingredientType + '.json')
-            .then(response => {
-                return response.json();
-            })
-            .then(function(ingredients) {
-                if(applyTreatmentData == true) {
-                    traitmentDataIngredients(ingredients, ingredientType, sortBy, orderBy);
-                } else {
-                    resolve(ingredients);
-                }
-            });
+function fetchDataJson(ingredientType, applyTreatmentData, sortBy = null, orderBy = null) {
+    return new Promise((resolve, reject) => {
+         /* Get datas from json file */
+        fetch('./assets/datas/' + ingredientType + '.json')
+        .then(response => {
+            return response.json();
+        })
+        .then(function(ingredients) {
+            if(applyTreatmentData == true) {
+                traitmentDataIngredients(ingredients, ingredientType, sortBy, orderBy);
+            } else {
+                resolve(ingredients);
+            }
         });
-    }
+    });
+}
 
 /**
  * For each ingredient we create an item in the table, we assign it to a line and this line is then added to the corresponding tab
@@ -538,9 +538,11 @@ function append_elements_to_div(parent, divs) {
 
 function addListenerOnIngredient(){
     let rows_ingredients = document.querySelectorAll(".tabreceipt__line:not(.main)");
+
     rows_ingredients.forEach(ingredient => {
        ingredient.addEventListener("click", function (event) {  
             event.preventDefault();
+            
             let property = this.querySelector('.tabreceipt__item:first-of-type p').textContent;
             let applyTreatmentData = false;
             let ingredientType = document.querySelector('.tabs-ingredients__item.active').dataset.ingredient;
@@ -548,10 +550,27 @@ function addListenerOnIngredient(){
             
             ingredientsDataPromise.then((ingredients) => {
                 let clicked_ingredient = ingredients.data.find(ingredient => ingredient.NAME === property);
-                console.log(clicked_ingredient);
+                
+                //Create div modal
                 let div = document.createElement('div');
                 div.setAttribute('class','modal');
+
+                //create div inner modal
+                let innerModal = document.createElement('div');
+                innerModal.setAttribute('class', 'modal__inner');
+
+                //Create list for ingredients
                 let ul = document.createElement('ul');
+
+                //Create title for modal
+                let title = document.createElement('h2');
+                title.textContent = "Détails ingrédient";
+                title.setAttribute('class','modal__title ff--nuxt');
+
+                //Create arrow to close modal
+                let close_modal = document.createElement('div');
+                close_modal.setAttribute('class','close_modal');
+
                 for (let property in clicked_ingredient) {
                     let li = document.createElement('li');
                     let span_key = document.createElement('span');
@@ -561,11 +580,22 @@ function addListenerOnIngredient(){
                     li.appendChild(span_key);
                     li.appendChild(span_value);
                     ul.appendChild(li);
-                  }
-                        
-                div.appendChild(ul);
-                console.log(div);
+                }
+
+                //Append elements to the modal
+                innerModal.appendChild(close_modal);
+                innerModal.appendChild(title);
+                innerModal.appendChild(ul);        
+                div.appendChild(innerModal);
                 document.querySelector('.inventaire').appendChild(div);
+
+                /* -----------------------------------
+                    CLOSE DETAILS INGREDIENT MODAL
+                -------------------------------------- */
+                let close_modal_items = document.querySelectorAll('.close_modal');
+                close_modal_items.forEach(element => {
+                    element.addEventListener('click', closeModal);
+                });
             
                 return div;
             });        
@@ -640,6 +670,17 @@ function sortData() {
     fetchDataJson(typeIngredient, applyTreatmentData, sortBy, orderBy);
 }
 
+/**
+ * Remove div modal from DOM
+ * 
+ */
+function closeModal() {
+    let modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.remove();
+    });
+}
+
 /* --------------------------------------------------------------------------------------------
                                     CALLS TO FUNCTION
 -------------------------------------------------------------------------------------------- */
@@ -706,6 +747,5 @@ window.addEventListener("load", function () {
     let form_addingredient = document.getElementById('form__add-ingredient')
     if (form_addingredient != null)
         form_addingredient.addEventListener('submit', checkAddIngredient)
-
 })
 
