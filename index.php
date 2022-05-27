@@ -66,18 +66,28 @@ require_once('./inc/head.php') ?>
                         <li class="tabreceipt__line main">
                             <div class="tabreceipt__item alpha" data-info="NAME">
                                 <h3>Nom</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
                             <div class="tabreceipt__item alpha" data-info="TYPE">
                                 <h3>Type</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
                             <div class="tabreceipt__item alpha" data-info="ORIGIN">
                                 <h3>Origine</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
                             <div class="tabreceipt__item alpha" data-info="QUANTITY">
                                 <h3>Quantité</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
-                        </li>
-                        <li class="tabreceipt__line">
                         </li>
                     </ul>
                 </div>
@@ -86,18 +96,28 @@ require_once('./inc/head.php') ?>
                         <li class="tabreceipt__line main">
                             <div class="tabreceipt__item alpha" data-info="NAME">
                                 <h3>Nom</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
                             <div class="tabreceipt__item alpha" data-info="TYPE">
                                 <h3>Type</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
                             <div class="tabreceipt__item alpha" data-info="ORIGIN">
                                 <h3>Origine</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
                             <div class="tabreceipt__item alpha" data-info="QUANTITY">
                                 <h3>Quantité</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
-                        </li>
-                        <li class="tabreceipt__line">
                         </li>
                     </ul>
                 </div>
@@ -106,18 +126,28 @@ require_once('./inc/head.php') ?>
                         <li class="tabreceipt__line main">
                             <div class="tabreceipt__item alpha" data-info="NAME">
                                 <h3>Nom</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
                             <div class="tabreceipt__item alpha" data-info="TYPE">
                                 <h3>Type</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
                             <div class="tabreceipt__item alpha" data-info="LABORATORY">
                                 <h3>Laboratoire</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
                             <div class="tabreceipt__item alpha" data-info="QUANTITY">
                                 <h3>Quantité</h3>
+                                <svg width="13" height="10" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L7.4641 4.5H0.535898L4 0Z" fill="white"/>
+                                </svg>
                             </div>
-                        </li>
-                        <li class="tabreceipt__line">
                         </li>
                     </ul>
                 </div>

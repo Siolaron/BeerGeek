@@ -445,43 +445,30 @@ function addListIngredient(new_ingredient) {
 /* --------------------------------------------------------------------------------------------
                                 Display data from file
 -------------------------------------------------------------------------------------------- */
+var ingredients_array;
 
-/**
+	/**
  *  Fetch data from file
  * 
  * @param {*} ingredientType Type of ingredient, yeasts, hops or malts
  * @param {*} sortBy By which type of information the table will be sorted
  * @param {*} orderBy Whether the table will be sorted ascending or descending
  */
-function fetchDataJson(ingredientType, sortBy = null, orderBy = null) {
-
-    /* Get datas from json file */
-    fetch('./assets/datas/' + ingredientType + '.json')
+function fetchDataJson(ingredientType, applyTreatmentData, sortBy = null, orderBy = null) {
+    return new Promise((resolve, reject) => {
+         /* Get datas from json file */
+        fetch('./assets/datas/' + ingredientType + '.json')
         .then(response => {
             return response.json();
         })
-        .then(function (ingredients) {
-            traitmentDataIngredients(ingredients, ingredientType, sortBy, orderBy);
+        .then(function(ingredients) {
+            if(applyTreatmentData == true) {
+                traitmentDataIngredients(ingredients, ingredientType, sortBy, orderBy);
+            } else {
+                resolve(ingredients);
+            }
         });
-}
-
-/**
- * Detects by which type of information and in which way the data will be sorted
- * 
- */
-function sortData() {
-
-    //Depending on the class, the data will be sorted in an ascending or descending manner
-    let orderBy;
-    orderBy = this.classList.contains('alpha') ? orderBy = 'alpha' : orderBy = 'alpha-reverse';
-    this.classList.toggle('alpha');
-
-    //Detects the current ingredient and the type of information the user has clicked on
-    let sortBy = this.dataset.info;
-    let typeIngredient = document.querySelector('.tabs-ingredients__item.active').dataset.ingredient;
-
-    //Re fetch the data to sort them
-    fetchDataJson(typeIngredient, sortBy, orderBy);
+    });
 }
 
 /**
@@ -494,37 +481,34 @@ function sortData() {
  */
 function traitmentDataIngredients(ingredients, typeIngredient, sortBy, orderBy) {
     ingredients = ingredients.data;
-
-    let ingredients_array = [];
+    ingredients_array = [];
 
     //push all ingredients in an array to be able to sort them after
     for (const ingredient of Object.entries(ingredients)) {
         ingredients_array.push(ingredient);
-    }
-
+    }  
+        
     //Sort datas
-    if (sortBy !== null) {
-        ingredients_array = ingredients_array.sort(function (a, b) {
-
-            if (a[1][sortBy] < b[1][sortBy]) {
+    if(sortBy !== null) {
+        ingredients_array = ingredients_array.sort(function(a, b) {
+            if ( a[1][sortBy] < b[1][sortBy] ){
                 return -1;
-            }
-            if (a[1][sortBy] > b[1][sortBy]) {
+              }
+              if ( a[1][sortBy] > b[1][sortBy] ){
                 return 1;
-            }
-            return 0;
+              }
+              return 0;
         });
-
+            
         //Sorting data descending
-        if (orderBy == 'alpha-reverse') {
+        if(orderBy == 'alpha-reverse') {
             ingredients_array.reverse();
         }
 
         //Remove old lines to make room for new ones
         let tab_active = document.querySelector('.tab-ingredients__pane.active');
         let old_rows = tab_active.querySelectorAll(".tabreceipt__line:not(.main)");
-
-        old_rows.forEach(function (old_row) {
+        old_rows.forEach(function(old_row) {
             old_row.remove();
         });
     }
@@ -533,18 +517,91 @@ function traitmentDataIngredients(ingredients, typeIngredient, sortBy, orderBy) 
     ingredients_array.forEach(ingredient => {
         let parent = document.querySelector('#' + typeIngredient + ' .tabreceipt');
         let divs = createItemsArray(typeIngredient, ingredient);
-
-        let li = document.createElement('li');
-        li.setAttribute('class', 'tabreceipt__line');
-        for (const oneDiv of Object.entries(divs)) {
-            li.append(oneDiv[1]);
-        }
-
-        parent.appendChild(li);
-
+        append_elements_to_div(parent, divs);
     });
-
+    addListenerOnIngredient();
 }
+
+/**
+ * Append elements to div
+ * @param {String} typeIngredient 
+ * @param {Array} ingredient 
+ */
+function append_elements_to_div(parent, divs) {
+    let li = document.createElement('li');
+    li.setAttribute('class','tabreceipt__line');
+    for (const oneDiv of Object.entries(divs)) {
+        li.append(oneDiv[1]);
+    }
+    parent.appendChild(li);
+}
+
+function addListenerOnIngredient(){
+    let rows_ingredients = document.querySelectorAll(".tabreceipt__line:not(.main)");
+
+    rows_ingredients.forEach(ingredient => {
+       ingredient.addEventListener("click", function (event) {  
+            event.preventDefault();
+            
+            let property = this.querySelector('.tabreceipt__item:first-of-type p').textContent;
+            let applyTreatmentData = false;
+            let ingredientType = document.querySelector('.tabs-ingredients__item.active').dataset.ingredient;
+            let ingredientsDataPromise = fetchDataJson(ingredientType, applyTreatmentData);
+            
+            ingredientsDataPromise.then((ingredients) => {
+                let clicked_ingredient = ingredients.data.find(ingredient => ingredient.NAME === property);
+                
+                //Create div modal
+                let div = document.createElement('div');
+                div.setAttribute('class','modal');
+
+                //create div inner modal
+                let innerModal = document.createElement('div');
+                innerModal.setAttribute('class', 'modal__inner');
+
+                //Create list for ingredients
+                let ul = document.createElement('ul');
+
+                //Create title for modal
+                let title = document.createElement('h2');
+                title.textContent = "Détails ingrédient";
+                title.setAttribute('class','modal__title ff--nuxt');
+
+                //Create arrow to close modal
+                let close_modal = document.createElement('div');
+                close_modal.setAttribute('class','close_modal');
+
+                for (let property in clicked_ingredient) {
+                    let li = document.createElement('li');
+                    let span_key = document.createElement('span');
+                    let span_value = document.createElement('span');
+                    span_key.textContent = property;
+                    span_value.textContent = clicked_ingredient[property];
+                    li.appendChild(span_key);
+                    li.appendChild(span_value);
+                    ul.appendChild(li);
+                }
+
+                //Append elements to the modal
+                innerModal.appendChild(close_modal);
+                innerModal.appendChild(title);
+                innerModal.appendChild(ul);        
+                div.appendChild(innerModal);
+                document.querySelector('.inventaire').appendChild(div);
+
+                /* -----------------------------------
+                    CLOSE DETAILS INGREDIENT MODAL
+                -------------------------------------- */
+                let close_modal_items = document.querySelectorAll('.close_modal');
+                close_modal_items.forEach(element => {
+                    element.addEventListener('click', closeModal);
+                });
+            
+                return div;
+            });        
+        });
+    });
+};
 
 /**
  * Create div and assign text to it
@@ -552,15 +609,12 @@ function traitmentDataIngredients(ingredients, typeIngredient, sortBy, orderBy) 
  * @param {String} text 
  * @returns 
  */
-function createDiv(text) {
+function createDiv(text = '') {
     let div = document.createElement('div');
-    div.setAttribute('class', 'tabreceipt__item');
-
+    div.setAttribute('class','tabreceipt__item');
     let p = document.createElement('p');
     p.textContent = text;
-
     div.appendChild(p);
-
     return div;
 }
 
@@ -578,7 +632,7 @@ function createItemsArray(typeName, ingredient) {
     let divOrigin;
     let divQuantity = createDiv('1,00 oz');
 
-    if (typeName === 'yeasts') {
+    if(typeName === 'yeasts') {
 
         divName = createDiv(ingredient[1]['NAME']);
         divType = createDiv(ingredient[1]['TYPE']);
@@ -595,6 +649,36 @@ function createItemsArray(typeName, ingredient) {
         return { divName, divType, divOrigin, divQuantity };
     }
 
+}
+
+/**
+ * Detects by which type of information and in which way the data will be sorted
+ * 
+ */
+function sortData() {
+    //Depending on the class, the data will be sorted in an ascending or descending manner
+    let orderBy;
+    orderBy = this.classList.contains('alpha') ?  orderBy = 'alpha-reverse' : orderBy = 'alpha';
+    this.classList.toggle('alpha');
+
+    //Detects the current ingredient and the type of information the user has clicked on
+    let sortBy = this.dataset.info;
+    let typeIngredient = document.querySelector('.tabs-ingredients__item.active').dataset.ingredient;
+    
+    //Re fetch the data to sort them
+    let applyTreatmentData = true;
+    fetchDataJson(typeIngredient, applyTreatmentData, sortBy, orderBy);
+}
+
+/**
+ * Remove div modal from DOM
+ * 
+ */
+function closeModal() {
+    let modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.remove();
+    });
 }
 
 /* --------------------------------------------------------------------------------------------
@@ -620,10 +704,11 @@ window.addEventListener("load", function () {
 
     /* infos ingredients */
     let allIngredients = ['hops', 'malts', 'yeasts'];
-
+ 
     /* For each file get the data from it */
     allIngredients.forEach(ingredient => {
-        fetchDataJson(ingredient);
+         let applyTreatmentData = true;
+        fetchDataJson(ingredient, applyTreatmentData);
     });
 
     /* ----------------------
@@ -631,9 +716,9 @@ window.addEventListener("load", function () {
     ---------------------- */
 
     let infos = document.querySelectorAll('.tabreceipt__line.main .tabreceipt__item');
-
+    
     infos.forEach(info => {
-        info.addEventListener("click", sortData);
+       info.addEventListener("click", sortData);
     });
 
     /* ----------------------
@@ -662,6 +747,5 @@ window.addEventListener("load", function () {
     let form_addingredient = document.getElementById('form__add-ingredient')
     if (form_addingredient != null)
         form_addingredient.addEventListener('submit', checkAddIngredient)
-
 })
 

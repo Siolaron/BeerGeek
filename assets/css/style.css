@@ -275,6 +275,76 @@ main {
     line-height: 1;
 }
 
+
+/* ------------------------
+    MODAL INGREDIENT
+------------------------ */
+.modal {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .25);
+    z-index: 5;
+}
+
+.modal__inner {
+    position: relative;
+    padding: 2rem;
+    width: 50%;
+    margin: 5rem auto 0 auto;
+    max-height: 500px;
+    overflow-y: scroll;
+    border: solid 1px var(--c-grey);
+    border-radius: 5px;
+    background-color: var(--c-light);
+    box-shadow: 0 10px 20px rgb(0 0 0 / 19%), 0 6px 6px rgb(0 0 0 / 23%);
+}
+
+.modal__title {
+    grid-area: title;
+    text-align: center;
+    font-size: var(--fs-l);
+    padding-bottom: 2rem;
+}
+
+.modal ul li span:first-of-type {
+    margin-right: 1rem;
+    font-weight: bold;
+}
+
+.modal ul li span:first-of-type::after {
+    content: ' : ';
+}
+
+.modal .close_modal {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--c-primary);
+    cursor: pointer;
+}
+
+.modal .close_modal::before, 
+.modal .close_modal::after {
+    content: '';
+    width: 13px;
+    height: 2px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    background-color: var(--c-dark);
+    transition: transform .45s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.modal .close_modal::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 /* ------------------------
        INFORMATIONS
 ------------------------ */
@@ -390,6 +460,19 @@ main {
 .tabreceipt__item {
     padding: .5rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.tabreceipt__item.alpha svg {
+    transform: rotate(180deg);
+    transition: all 0.3s linear;
+}
+
+.tabreceipt__item svg {
+    margin-left: 1rem;
+    transform: rotate(0deg);
+    transition: all 0.3s linear;
 }
 
 .tabreceipt__item p {
